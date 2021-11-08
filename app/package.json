@@ -1,0 +1,30 @@
+{
+  "name": "bike-management",
+  "version": "0.0.1",
+  "description": "A MySQL/Nodejs web app to manages bikes, stations and members.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pjdevs/bike-management.git"
+  },
+  "keywords": [
+    "database",
+    "mysql",
+    "nodejs",
+    "bike"
+  ],
+  "author": "pjdevs, luks-m, zaksley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pjdevs/bike-management/issues"
+  },
+  "homepage": "https://github.com/pjdevs/bike-management#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  }
+}
