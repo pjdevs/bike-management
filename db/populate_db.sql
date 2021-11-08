@@ -2,11 +2,11 @@
 --    suppression des donnees
 -- ============================================================
 
-delete from COMMUNES;
-delete from STATIONS;
-delete from VELOS;
-delete from ADHERENTS;
 delete from EMPRUNTS;
+delete from ADHERENTS;
+delete from VELOS;
+delete from STATIONS;
+delete from COMMUNES;
 
 commit;
 
@@ -16,31 +16,31 @@ commit;
 
 -- COMMUNES
 
-insert into COMMUNES values ('Bordeaux');
+insert into COMMUNES values (1, 'Bordeaux');
 
 commit;
 
 -- STATIONS
 
-insert into STATIONS values ('1 Avenue du Dr Albert Shweitzer 33400 Talence', 10, 1);
+insert into STATIONS values (1, '1 Avenue du Dr Albert Shweitzer 33400 Talence', 10, 1);
 
 commit;
 
 -- VELOS
 
-insert into VELOS values ('RC360', 'Rockrider', '2021-11-08', 0, 'Bon état', 100, 1);
+insert into VELOS values (1, 'RC360', 'Rockrider', date('2021-11-08'), 0, 'Bon état', 100, 1);
 
 commit;
 
 -- ADHERENTS
 
-insert into ADHERENTS values ('Morel', 'PJ', '7 Rue Salvador Allende 33400 Talence', '2021-11-08', 1);
+insert into ADHERENTS values (1, 'Morel', 'PJ', '7 Rue Salvador Allende 33400 Talence', date('2021-11-08'), 1);
 
 commit;
 
 -- EMPRUNTS
 
-insert into EMPRUNTS values ('2021-11-08', '23:21:00', 10, '2021-11-09', '05:48:54', 20, 1);
+insert into EMPRUNTS values (1, date('2021-11-08'), time('23:21:00'), 10, date('2021-11-09'), time('05:48:54'), 20, 1, 1, 1, 1);
 
 commit;
 
