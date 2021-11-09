@@ -1,0 +1,59 @@
+
+-- ============================================================
+--    Consultation 
+-- ============================================================
+
+------------------------------------------
+
+Infos vélos:
+
+
+Infos Stations:
+
+
+Infos Adhérents: 
+
+
+------------------------------------------
+
+Liste des vélos par station :
+
+
+
+Liste des vélos en cours d'utilisation :
+
+
+
+------------------------------------------
+
+Liste des stations dans une commune donnée :
+
+
+------------------------------------------
+
+Liste des adhérents qui ont emprunté au moins 2 vélos différents pour un jour donné: 
+
+-------------------------------------------
+
+
+
+-- ============================================================
+--    Statistiques 
+-- ============================================================
+
+
+Moyenne du nombre d'usager par vélo par jour:
+
+
+Moyenne des distances parcourues par les vélos sur une semaine:
+
+
+Classement des stations par nombre de places disponibles par commune: 
+
+
+Classement des vélos les plus chargés par station:
+
+
+-- ============================================================
+--   Mise à jour 
+-- ============================================================
