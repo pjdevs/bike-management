@@ -28,7 +28,7 @@ commit;
 
 -- VELOS
 
-insert into VELOS values (1, 'RC360', 'Rockrider', date('2021-11-08'), 0, 'Bon état', 100, 1);
+insert into VELOS values (1, 'Tilt 500 E', "B'Twin", date('2021-11-08'), 0, 'NEUF', 100, 1);
 
 commit;
 
