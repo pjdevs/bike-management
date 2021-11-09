@@ -17,18 +17,24 @@ commit;
 -- COMMUNES
 
 insert into COMMUNES values (1, 'Bordeaux');
+insert into COMMUNES values (2, 'Pessac'); 
+insert into COMMUNES values (3, 'Talence'); 
+insert into COMMUNES values (4, 'Mérignac'); 
+insert into COMMUNES values (5, 'Pau'); 
 
 commit;
 
 -- STATIONS
 
-insert into STATIONS values (1, '1 Avenue du Dr Albert Shweitzer 33400 Talence', 10, 1);
+insert into STATIONS values (1, '1 Avenue du Dr Albert Shweitzer 33400 Talence', 10, 3);
+insert into STATIONS values (2, 'Place Pey Berland 33000 Bordeaux', 30, 1); 
 
 commit;
 
 -- VELOS
 
 insert into VELOS values (1, 'Tilt 500 E', "B'Twin", date('2021-11-08'), 0, 'NEUF', 100, 1);
+insert into VELOS values (2, 'ELOPS 920', "ELOPS", date('2021-10-08'), 50, 'BON', 70, NULL); 
 
 commit;
 
