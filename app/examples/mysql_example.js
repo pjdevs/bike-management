@@ -1,14 +1,9 @@
 // Modules
 const mysql = require('mysql');
-const config = require('./config');
+const config = require('../config');
 
 // Database connection
-const connection = mysql.createConnection({
-    host: config.database.host,
-    user: config.database.user,
-    password: config.database.password,
-    database: config.database.database
-});
+const connection = mysql.createConnection(config.database);
 
 // Make a query
 connection.query('select * from VELOS;', (err, rows, fields) => {
