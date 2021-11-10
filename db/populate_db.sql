@@ -28,6 +28,10 @@ commit;
 
 insert into STATIONS values (1, '1 Avenue du Dr Albert Shweitzer 33400 Talence', 10, 3);
 insert into STATIONS values (2, 'Place Pey Berland 33000 Bordeaux', 30, 1); 
+insert into STATIONS values (3, '42 rue Marc Sangnier 33400 Talence', 25, 3);
+insert into STATIONS values (4, '12 Avenue Camille Pelletan 33400 Talence', 50, 3); 
+insert into STATIONS values (5, 'Aéroport Avenue René Cassin 33700 Mérignac', 200, 4); 
+insert into STATIONS values (6, '4 Bis Avenue Antoine Becquerel 33600 Pessac', 45, 2); 
 
 commit;
 
@@ -40,7 +44,8 @@ commit;
 
 -- ADHERENTS
 
-insert into ADHERENTS values (1, 'Morel', 'PJ', '7 Rue Salvador Allende 33400 Talence', date('2021-11-08'), 1);
+insert into ADHERENTS values (1, 'Morel', 'PJ', '7 Rue Salvador Allende 33400 Talence', date('2021-11-08'), 3);
+insert into ADHERENTS values (2, 'Medina', 'Enzo', '4 Rue Georges Bonnac 33000 Bordeaux', date('2021-11-10'), 1); 
 
 commit;
 
