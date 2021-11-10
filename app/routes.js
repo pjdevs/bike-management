@@ -10,6 +10,9 @@ const router = express.Router();
 router.get('/', (req, res) => {
     res.sendFile(config.app.viewsDir + '/index.html');
 })
+.get('/station/:stationID', (req, res) => {
+    res.sendFile(config.app.viewsDir + '/station.html');
+})
 .get('/api/stations', (req, res) => {
     database.get().getStations()
     .then(stations => {
