@@ -7,18 +7,22 @@
 
 Infos vélos:
 
+select * from VELOS; 
 
 Infos Stations:
 
+select * from STATIONS; 
 
 Infos Adhérents: 
+
+select * from ADHERENTS; 
 
 
 ------------------------------------------
 
 Liste des vélos par station :
 
-
+select * from VELOS where ID_STATION=#ID_STATION#;
 
 Liste des vélos en cours d'utilisation :
 
@@ -51,6 +55,17 @@ select * from VELOS where ETAT_VELO=#ETAT#;
 
 Liste des stations dans une commune donnée :
 
+select * from STATIONS where ID_COMMUNE=#ID_COMMUNE#; 
+
+        -- Résultat pour #ID_COMMUNE# = '3' (Talence) 
+
+            +------------+-----------------------------------------------+-----------------------+------------+
+            | ID_STATION | ADRESSE_STATION                               | NOMBRE_BORNES_STATION | ID_COMMUNE |
+            +------------+-----------------------------------------------+-----------------------+------------+
+            |          1 | 1 Avenue du Dr Albert Shweitzer 33400 Talence |                    10 |          3 |
+            |          3 | 42 rue Marc Sangnier 33400 Talence            |                    25 |          3 |
+            |          4 | 12 Avenue Camille Pelletan 33400 Talence      |                    50 |          3 |
+            +------------+-----------------------------------------------+-----------------------+------------+
 
 ------------------------------------------
 

@@ -28,6 +28,10 @@ commit;
 
 insert into STATIONS values (1, '1 Avenue du Docteur Albert Schweitzer, 33400 Talence', 1, 3, 44.792864, -0.623373);
 insert into STATIONS values (2, 'Place Pey Berland 33000, Bordeaux', 30, 1, 44.83772845,-0.5765286471688031); 
+insert into STATIONS values (3, '42 rue Marc Sangnier 33400 Talence', 25, 3, 0.0);
+insert into STATIONS values (4, '12 Avenue Camille Pelletan 33400 Talence', 50, 3, 0.0); 
+insert into STATIONS values (5, 'Aéroport Avenue René Cassin 33700 Mérignac', 200, 4, 0.0); 
+insert into STATIONS values (6, '4 Bis Avenue Antoine Becquerel 33600 Pessac', 45, 2, 0.0); 
 
 commit;
 
