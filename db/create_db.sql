@@ -117,3 +117,6 @@ DELIMITER ;
 -- On emprunte un vélo avec un KM_DEBUT différent du KM_VELO du vélo
 
 -- On emprunte un vélo qui est déjà emprunté
+
+-- Empruntez un ID vélo qui n'est pas encore enregistré dans la base de données (date > à la date de l'emprunt)
+
