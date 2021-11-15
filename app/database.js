@@ -37,6 +37,18 @@ class Database {
     getStations() {
         return this.query('select * from STATIONS;');
     }
+
+    /**
+     * Custom query to get a station by id.
+     * @returns A promise for the request.
+     */
+     getStation(stationID) {
+        return new Promise((resolve, reject) => {
+            this.query(`select * from STATIONS where ID_STATION = ${stationID};`)
+            .then(rows => resolve(rows[0]))
+            .catch(err => reject(err));
+        });
+    }
 }
 
 const database = new Database(config.database);

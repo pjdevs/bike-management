@@ -10,6 +10,8 @@ const port = 8080; // usual HTTP port is 80 but it need root rights so 8080 is g
 const app = express();
 
 //// Define middlewares (aka addons/config)
+app.set('views', config.app.viewsDir);
+app.set('view engine', 'ejs');
 app.use(express.static(config.app.staticDir));
 //// Define all the routes
 app.use(routes);

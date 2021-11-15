@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css"/>
+    <title>Bike Management App</title>
+</head>
+<body>
+    <header>
+        <h1>Station <%= station.ID_STATION %></h1>
+    </header>
+    <main>
+        <div>
+            <label>Adresse :</label>
+            <p><%= station.ADRESSE_STATION %></p>
+        </div>
+        <div>
+            <label>Nombre de bornes :</label>
+            <p><%= station.NOMBRE_BORNES_STATION %></p>
+        </div>
+    </main>
+    <script type="text/javascript" src="/js/station.js"></script>
+</body>
+</html>

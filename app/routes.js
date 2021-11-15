@@ -8,10 +8,16 @@ const router = express.Router();
 
 // Define the routes
 router.get('/', (req, res) => {
-    res.sendFile(config.app.viewsDir + '/index.html');
+    res.render('index');
 })
 .get('/station/:stationID', (req, res) => {
-    res.sendFile(config.app.viewsDir + '/station.html');
+    database.get().getStation(req.params.stationID)
+    .then(station => {
+        res.render('station', {station: station});
+    })
+    .catch(err => {
+        res.status(500).send(err);
+    });
 })
 .get('/api/stations', (req, res) => {
     database.get().getStations()
