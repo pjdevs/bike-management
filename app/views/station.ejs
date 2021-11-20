@@ -11,13 +11,39 @@
         <h1>Station <%= station.ID_STATION %></h1>
     </header>
     <main>
-        <div>
-            <label>Adresse :</label>
-            <p><%= station.ADRESSE_STATION %></p>
+        <h5>Informations sur la station</h5>
+        <div id="station-info">
+            <label for="station-addeess">Adresse :</label>
+            <p id="station-addeess"><%= station.ADRESSE_STATION %></p>
+            <label for="station-borne-number">Nombre de bornes :</label>
+            <p id="station-borne-number"><%= station.NOMBRE_BORNES_STATION %></p>
         </div>
-        <div>
-            <label>Nombre de bornes :</label>
-            <p><%= station.NOMBRE_BORNES_STATION %></p>
+        <h5>Les vélos dans cette station</h5>
+        <div id="bike-list">
+            <table class="center">
+                <thead>
+                    <tr>
+                        <th colspan="1">Marque</th>
+                        <th colspan="1">Référence</th>
+                        <th colspan="1">Date de mise en service</th>
+                        <th colspan="1">Kilométrage</th>
+                        <th colspan="1">Etat</th>
+                        <th colspan="1">Batterie</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% bikes.forEach(bike => { %>
+                        <tr class="bike">
+                            <td><%= bike.MARQUE_VELO %></td>
+                            <td><%= bike.REFERENCE_VELO %></td>
+                            <td><%= bike.DATE_SERVICE_VELO %></td>
+                            <td><%= bike.KM_VELO %></td>
+                            <td><%= bike.ETAT_VELO %></td>
+                            <td><%= bike.BATTERIE_VELO %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
         </div>
     </main>
     <script type="text/javascript" src="/js/station.js"></script>

@@ -39,6 +39,14 @@ class Database {
     }
 
     /**
+     * Custom query to get the list of bikes in station.
+     * @returns A promise for the request.
+     */
+     getBikes(stationID) {
+        return this.query(`select * from VELOS where ID_STATION = ${stationID};`);
+    }
+
+    /**
      * Custom query to get a station by id.
      * @returns A promise for the request.
      */

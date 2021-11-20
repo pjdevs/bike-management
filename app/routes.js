@@ -11,9 +11,15 @@ router.get('/', (req, res) => {
     res.render('index');
 })
 .get('/station/:stationID', (req, res) => {
-    database.get().getStation(req.params.stationID)
+    const db = database.get();
+    const stationID = req.params.stationID;
+
+    db.getStation(stationID)
     .then(station => {
-        res.render('station', {station: station});
+        db.getBikes(stationID)
+        .then(bikes => {
+            res.render('station', {station: station, bikes: bikes});
+        });
     })
     .catch(err => {
         res.status(500).send(err);
