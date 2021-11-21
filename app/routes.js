@@ -10,6 +10,21 @@ const router = express.Router();
 router.get('/', (req, res) => {
     res.render('index');
 })
+.get('/subscribers', (req, res) => {
+    res.render('subscribers');
+})
+.get('/bikes', (req, res) => {
+    res.render('bikes');
+})
+.get('/bike/:bikeID', (req, res) => {
+    database.get().getBike(req.params.bikeID)
+    .then(bike => {
+        res.render('bike', {bike: bike});
+    })
+    .catch(err => {
+        res.status(500).json(err);
+    });
+})
 .get('/station/:stationID', (req, res) => {
     const db = database.get();
     const stationID = req.params.stationID;

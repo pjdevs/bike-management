@@ -47,6 +47,18 @@ class Database {
     }
 
     /**
+     * Custom query to get a bike by ID.
+     * @returns A promise for the request.
+     */
+         getBike(bikeID) {
+            return new Promise((resolve, reject) => {
+                this.query(`select * from VELOS where ID_VELO = ${bikeID};`)
+                .then(rows => resolve(rows[0]))
+                .catch(err => reject(err));
+            });
+        }
+
+    /**
      * Custom query to get a station by id.
      * @returns A promise for the request.
      */
