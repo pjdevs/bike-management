@@ -8,17 +8,15 @@
 </head>
 <body>
     <header>
-        <h1>Station <%= station.ID_STATION %></h1>
+        <h1>Station <%= station.ADRESSE_STATION %></h1>
     </header>
     <main>
-        <h5>Informations sur la station</h5>
+        <h2>Informations sur la station</h2>
         <div id="station-info">
-            <label for="station-addeess">Adresse :</label>
-            <p id="station-addeess"><%= station.ADRESSE_STATION %></p>
             <label for="station-borne-number">Nombre de bornes :</label>
             <p id="station-borne-number"><%= station.NOMBRE_BORNES_STATION %></p>
         </div>
-        <h5>Les vélos dans cette station</h5>
+        <h2>Les vélos dans cette station</h2>
         <div id="bike-list">
             <table class="center">
                 <thead>
@@ -33,10 +31,10 @@
                 </thead>
                 <tbody>
                     <% bikes.forEach(bike => { %>
-                        <tr class="bike">
+                        <tr class="bike" onclick="window.location.assign('/bikes/<%= bike.ID_VELO %>')">
                             <td><%= bike.MARQUE_VELO %></td>
                             <td><%= bike.REFERENCE_VELO %></td>
-                            <td><%= bike.DATE_SERVICE_VELO %></td>
+                            <td><%= new Date(bike.DATE_SERVICE_VELO).toLocaleDateString() %></td>
                             <td><%= bike.KM_VELO %></td>
                             <td><%= bike.ETAT_VELO %></td>
                             <td><%= bike.BATTERIE_VELO %></td>
