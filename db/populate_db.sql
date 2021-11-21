@@ -28,10 +28,10 @@ commit;
 
 insert into STATIONS values (1, '1 Avenue du Docteur Albert Schweitzer, 33400 Talence', 1, 3, 44.792864, -0.623373);
 insert into STATIONS values (2, 'Place Pey Berland 33000, Bordeaux', 30, 1, 44.83772845,-0.5765286471688031); 
-insert into STATIONS values (3, '42 rue Marc Sangnier 33400 Talence', 25, 3, 0.0, 0.0);
-insert into STATIONS values (4, '12 Avenue Camille Pelletan 33400 Talence', 50, 3, 0.0, 0.0); 
-insert into STATIONS values (5, 'Aéroport Avenue René Cassin 33700 Mérignac', 200, 4, 0.0, 0.0); 
-insert into STATIONS values (6, '4 Bis Avenue Antoine Becquerel 33600 Pessac', 45, 2, 0.0, 0.0); 
+insert into STATIONS values (3, '42 rue Marc Sangnier 33400 Talence', 25, 3, 44.8084094, -0.6037152);
+insert into STATIONS values (4, '12 Rue Camille Pelletan 33400 Talence', 50, 3, 44.8128305, -0.5909929); 
+insert into STATIONS values (5, 'Avenue René Cassin 33700 Mérignac', 200, 4, 44.8332441, -0.686935); 
+insert into STATIONS values (6, '4 Bis Rue Antoine Becquerel 33600 Pessac', 45, 2, 44.7904825,-0.6504596); 
 
 commit;
 
@@ -44,6 +44,9 @@ insert into VELOS values (4, 'RIVERSIDE 500', "RIVERSIDE", date('2021-11-01'), 1
 insert into VELOS values (5, 'RIVERSIDE 920 E', "RIVERSIDE", date('2021-11-01'), 90, 'BON', 60, 3);
 insert into VELOS values (6, 'ELOPS 120 E', "ELOPS", date('2021-11-05'), 720, 'MAUVAIS', 20, 4); 
 insert into VELOS values (7, 'ELOPS 900 E', "ELOPS", date('2021-11-05'), 220, 'MOYEN', 70, 2); 
+insert into VELOS values (8, 'Tilt 500 E', "B'Twin", date('2021-11-08'), 20, 'NEUF', 80, 1);
+insert into VELOS values (9, 'Tilt 500 E', "B'Twin", date('2021-11-08'), 107, 'MOYEN', 50, 1);
+insert into VELOS values (10, 'Tilt 500 E', "B'Twin", date('2021-11-08'), 112, 'MOYEN', 44, 1);
 
 commit;
 
@@ -52,7 +55,7 @@ commit;
 insert into ADHERENTS values (1, 'MOREL', 'Pierre-Jean', '7 Rue Salvador Allende, 33400 Talence', date('2021-11-08'), 3);
 insert into ADHERENTS values (2, 'MARAIS', 'Lucas', ',7 Rue Léo Ferré 33400 Pessac', date('2021-11-08'), 2);
 insert into ADHERENTS values (3, 'MEDINA', 'Enzo', '4 Rue Georges Bonnac, 33000 Bordeaux', date('2021-11-08'), 1);
-insert into ADHERENTS values (4, 'FORNES', 'Guillaume', 'Adresse', date('2021-11-15'), 4); 
+insert into ADHERENTS values (4, 'FORNES', 'Guillaume', 'Adresse', date('2021-11-15'), 4);
 
 commit;
 
