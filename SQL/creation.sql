@@ -1,5 +1,5 @@
 -- ============================================================
---    suppression des tables
+--    Suppression des tables
 -- ============================================================
 
 DROP TABLE IF EXISTS `DISTANCIER`;
@@ -9,9 +9,8 @@ DROP TABLE IF EXISTS `ADHERENTS`;
 DROP TABLE IF EXISTS `STATIONS`;
 DROP TABLE IF EXISTS `COMMUNES`;
 
-
 -- ============================================================
---    creation des tables
+--    Création des tables
 -- ============================================================
 
 CREATE TABLE COMMUNES(
@@ -20,11 +19,13 @@ CREATE TABLE COMMUNES(
     PRIMARY KEY(ID_COMMUNE)
 );
 
-CREATE OR REPLACE TABLE STATIONS(
+CREATE TABLE STATIONS(
     ID_STATION INT NOT NULL UNIQUE AUTO_INCREMENT,
-    ADRESSE_STATION VARCHAR(50) NOT NULL,
-    NOMBRE_BORNES_STATION INT NOT NULL,
+    ADRESSE_STATION VARCHAR(100) NOT NULL,
+    NOMBRE_BORNES_STATION INT NOT NULL CHECK(NOMBRE_BORNES_STATION > 0),
     ID_COMMUNE INT NOT NULL,
+    LATTITUDE_STATION DOUBLE NOT NULL,
+    LONGITUDE_STATION DOUBLE NOT NULL,
     PRIMARY KEY(ID_STATION),
     FOREIGN KEY(ID_COMMUNE) REFERENCES COMMUNES(ID_COMMUNE)
 );
@@ -33,7 +34,7 @@ CREATE TABLE ADHERENTS(
     ID_ADHERENT INT NOT NULL UNIQUE AUTO_INCREMENT,
     NOM_ADHERENT VARCHAR(50) NOT NULL,
     PRENOM_ADHERENT VARCHAR(50) NOT NULL,
-    ADRESSE_ADHERENT VARCHAR(50) NOT NULL,
+    ADRESSE_ADHERENT VARCHAR(100) NOT NULL,
     DATE_ADHESION_ADHERENT DATE NOT NULL,
     ID_COMMUNE INT NOT NULL,
     PRIMARY KEY(ID_ADHERENT),
@@ -58,14 +59,15 @@ CREATE TABLE EMPRUNTS(
     DATE_DEBUT_EMPRUNT DATE NOT NULL,
     HEURE_DEBUT_EMPRUNT TIME NOT NULL,
     KM_DEBUT_EMPRUNT INT NOT NULL,
+    ID_STATION_DEBUT INT NOT NULL,
     DATE_FIN_EMPRUNT DATE,
     HEURE_FIN_EMPRUNT TIME,
     KM_FIN_EMPRUNT INT,
-    CHECK(DATE_DEBUT_EMPRUNT <= DATE_FIN_EMPRUNT AND KM_DEBUT_EMPRUNT <= KM_FIN_EMPRUNT),
-    ID_STATION_DEBUT INT NOT NULL,
     ID_STATION_FIN INT,
     ID_ADHERENT INT NOT NULL,
     ID_VELO INT NOT NULL,
+    CHECK(DATE_DEBUT_EMPRUNT <= DATE_FIN_EMPRUNT),
+    CHECK(KM_DEBUT_EMPRUNT <= KM_FIN_EMPRUNT),
     PRIMARY KEY(ID_EMPRUNT),
     FOREIGN KEY(ID_STATION_DEBUT) REFERENCES STATIONS(ID_STATION),
     FOREIGN KEY(ID_STATION_FIN) REFERENCES STATIONS(ID_STATION),
@@ -81,3 +83,40 @@ CREATE TABLE DISTANCIER(
     FOREIGN KEY(ID_STATION_1) REFERENCES STATIONS(ID_STATION),
     FOREIGN KEY(ID_STATION_2) REFERENCES STATIONS(ID_STATION)
 );
+
+-- ============================================================
+--    Contraintes d'intégrité supplémentaires
+-- ============================================================
+
+-- On fait l'hypothèse que pour rendre un vélo on a ce processus :
+--    1. On stocke le vélo (colonne STATION de VELOS)
+--    2. On remplit l'emprunt (colonnes *_FIN)
+
+
+-- On emprunte un vélo à une station alors qu'il n'y est pas
+
+-- Rend un vélo à une station alors qu'elle n'a pa assez de bornes
+DELIMITER //
+
+CREATE OR REPLACE TRIGGER TROP_DE_VELO
+BEFORE UPDATE ON EMPRUNTS FOR EACH ROW
+BEGIN
+    DECLARE nb_velos_station INT;
+    DECLARE nb_bornes INT;
+
+    SELECT count(*) FROM VELOS WHERE VELOS.ID_STATION = NEW.ID_STATION_FIN INTO nb_velos_station;
+    SELECT NOMBRE_BORNES_STATION FROM STATIONS WHERE ID_STATION = NEW.ID_STATION_FIN INTO nb_bornes;
+
+    IF nb_velos_station >= nb_bornes THEN
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Pas assez de bornes à cette station, elle est pleine';
+    END IF;
+END; //
+
+DELIMITER ;
+
+-- On emprunte un vélo avec un KM_DEBUT différent du KM_VELO du vélo
+
+-- On emprunte un vélo qui est déjà emprunté
+
+-- Empruntez un ID vélo qui n'est pas encore enregistré dans la base de données (date > à la date de l'emprunt)
+
