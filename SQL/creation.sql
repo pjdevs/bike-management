@@ -92,8 +92,33 @@ CREATE TABLE DISTANCIER(
 --    1. On stocke le vélo (colonne STATION de VELOS)
 --    2. On remplit l'emprunt (colonnes *_FIN)
 
+-- Supprimer un adhérent alors qu'il est en train d'emprunter un vélo
+-- DELIMITER //
+
+-- CREATE OR REPLACE TRIGGER ADHERENT_PAS_RENDU
+-- BEFORE DELETE ON ADHERENTS FOR EACH ROW
+-- BEGIN
+--     -- Verifier il n'a aucun emprunt en cours
+-- END; //
+
+-- DELIMITER ;
 
 -- On emprunte un vélo à une station alors qu'il n'y est pas
+DELIMITER //
+
+CREATE OR REPLACE TRIGGER VELO_PAS_LA
+BEFORE UPDATE ON EMPRUNTS FOR EACH ROW
+BEGIN
+    DECLARE velo_est_dans_station INT;
+
+    SELECT count(*) FROM VELOS WHERE VELOS.ID_VELO = NEW.ID_VELO INTO velo_est_dans_station;
+
+    IF nb_velos_station <= 0 THEN
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Impossible d emprunter ce vélo, il n est pas dans cette station';
+    END IF;
+END; //
+
+DELIMITER ;
 
 -- Rend un vélo à une station alors qu'elle n'a pa assez de bornes
 DELIMITER //
@@ -101,22 +126,78 @@ DELIMITER //
 CREATE OR REPLACE TRIGGER TROP_DE_VELO
 BEFORE UPDATE ON EMPRUNTS FOR EACH ROW
 BEGIN
-    DECLARE nb_velos_station INT;
-    DECLARE nb_bornes INT;
+    IF  THEN
+        DECLARE nb_velos_station INT;
+        DECLARE nb_bornes INT;
 
-    SELECT count(*) FROM VELOS WHERE VELOS.ID_STATION = NEW.ID_STATION_FIN INTO nb_velos_station;
-    SELECT NOMBRE_BORNES_STATION FROM STATIONS WHERE ID_STATION = NEW.ID_STATION_FIN INTO nb_bornes;
+        SELECT count(*) FROM VELOS WHERE VELOS.ID_STATION = NEW.ID_STATION_FIN INTO nb_velos_station;
+        SELECT NOMBRE_BORNES_STATION FROM STATIONS WHERE ID_STATION = NEW.ID_STATION_FIN INTO nb_bornes;
 
-    IF nb_velos_station >= nb_bornes THEN
-        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Pas assez de bornes à cette station, elle est pleine';
+        IF nb_velos_station >= nb_bornes THEN
+            SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Pas assez de bornes à cette station, elle est pleine';
+        END IF;
     END IF;
 END; //
 
 DELIMITER ;
 
 -- On emprunte un vélo avec un KM_DEBUT différent du KM_VELO du vélo
+DELIMITER //
 
--- On emprunte un vélo qui est déjà emprunté
+CREATE OR REPLACE TRIGGER KM_EMPRUNT_DIFFERENT
+BEFORE UPDATE ON EMPRUNTS FOR EACH ROW
+BEGIN
+    DECLARE nb_km_velo INT;
 
--- Empruntez un ID vélo qui n'est pas encore enregistré dans la base de données (date > à la date de l'emprunt)
+    SELECT KM_VELO FROM VELOS WHERE VELOS.ID_VELO = NEW.ID_VELO INTO nb_km_velo;
 
+    IF nb_km_velo != NEW.KM_DEBUT_EMPRUNT THEN
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Le kilométrage du début de l emprunt ne correspond au kilométrage';
+    END IF;
+END; //
+
+DELIMITER ;
+
+-- Empruntez un vélo avant qu'il ai été mis en service
+DELIMITER //
+
+CREATE OR REPLACE TRIGGER EMPRUNT_AVANT_DATE
+BEFORE UPDATE ON EMPRUNTS FOR EACH ROW
+BEGIN
+    DECLARE date_service_velo DATE;
+    
+    SELECT DATE_SERVICE_VELO FROM VELOS WHERE VELOS.ID_VELO = NEW.ID_VELO INTO date_service_velo;
+
+    IF NEW.DATE_DEBUT_EMPRUNT < date_service_velo THEN
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Un vélo ne peut pas être emprunté à une date inférieure à sa date de mise en service';
+    END IF;
+END; //
+
+DELIMITER ;
+
+-- Emprunter un vélo par un adhérent qui est déjà sur un vélo
+-- DELIMITER //
+
+-- CREATE OR REPLACE TRIGGER DEJA_EMPRUNT
+-- BEFORE UPDATE ON VELO FOR EACH ROW
+-- BEGIN
+-- END; //
+
+-- DELIMITER ;
+
+-- Diminuer les kilomètres d'un vélo
+DELIMITER //
+
+CREATE OR REPLACE TRIGGER DIMINUER_KM_VELO
+BEFORE UPDATE ON VELO FOR EACH ROW
+BEGIN
+    DECLARE nb_km_velo INT;
+
+    SELECT KM_VELO FROM VELOS WHERE VELOS.ID_VELO = NEW.ID_VELO INTO nb_km_velo;
+
+    IF NEW.KM_VELO < nb_km_velo THEN
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Un vélo ne peut pas perdre de kilométrage';
+    END IF;
+END; //
+
+DELIMITER ;
