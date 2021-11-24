@@ -1,2 +1,2 @@
-source create_db.sql;
-source populate_db.sql;
+source ./SQL/creation.sql;
+source ./SQL/population.sql;
