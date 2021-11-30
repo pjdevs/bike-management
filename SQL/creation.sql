@@ -113,7 +113,7 @@ BEGIN
 
     SELECT count(*) FROM VELOS WHERE VELOS.ID_VELO = NEW.ID_VELO INTO velo_est_dans_station;
 
-    IF nb_velos_station <= 0 THEN
+    IF velo_est_dans_station <= 0 THEN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Impossible d emprunter ce vélo, il n est pas dans cette station';
     END IF;
 END; //
@@ -126,16 +126,14 @@ DELIMITER //
 CREATE OR REPLACE TRIGGER TROP_DE_VELO
 BEFORE UPDATE ON EMPRUNTS FOR EACH ROW
 BEGIN
-    IF  THEN
-        DECLARE nb_velos_station INT;
-        DECLARE nb_bornes INT;
+    DECLARE nb_velos_station INT;
+    DECLARE nb_bornes INT;
 
-        SELECT count(*) FROM VELOS WHERE VELOS.ID_STATION = NEW.ID_STATION_FIN INTO nb_velos_station;
-        SELECT NOMBRE_BORNES_STATION FROM STATIONS WHERE ID_STATION = NEW.ID_STATION_FIN INTO nb_bornes;
+    SELECT count(*) FROM VELOS WHERE VELOS.ID_STATION = NEW.ID_STATION_FIN INTO nb_velos_station;
+    SELECT NOMBRE_BORNES_STATION FROM STATIONS WHERE ID_STATION = NEW.ID_STATION_FIN INTO nb_bornes;
 
-        IF nb_velos_station >= nb_bornes THEN
-            SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Pas assez de bornes à cette station, elle est pleine';
-        END IF;
+    IF nb_velos_station >= nb_bornes THEN
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Pas assez de bornes à cette station, elle est pleine';
     END IF;
 END; //
 
