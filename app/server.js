@@ -3,10 +3,6 @@ const express = require('express');
 const config = require('./config');
 const routes = require('./routes');
 
-//// Create app
-const host = '0.0.0.0'; // any address
-const port = 8080; // usual HTTP port is 80 but it need root rights so 8080 is good for tests
-
 const app = express();
 
 //// Define middlewares (aka addons/config)
@@ -17,6 +13,6 @@ app.use(express.static(config.app.staticDir));
 app.use(routes);
 
 //// Create HTTP server and listen for requests
-const server = app.listen(port, host, () => {
+const server = app.listen(config.server.port, config.server.host, () => {
     console.log(`Server is listenning on ${server.address().address}:${server.address().port}`);
 });

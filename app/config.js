@@ -15,3 +15,11 @@ exports.app = {
     staticDir: __dirname + '/public',
     viewsDir: __dirname + '/views'
 };
+
+/**
+ * Server related informations
+ */
+exports.server = {
+	host: '0.0.0.0',
+	port: 8888	
+};
