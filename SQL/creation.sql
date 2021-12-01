@@ -85,12 +85,73 @@ CREATE TABLE DISTANCIER(
 );
 
 -- ============================================================
+--    Vues utiles
+-- ============================================================
+
+-- Vue sur le dernier emprunt d'un adhérent
+-- TODO: a corriger marche presque
+-- CREATE OR REPLACE VIEW DERNIER_EMPRUNT_ADHERENT
+-- AS 
+--     SELECT 
+--         *, MAX(DATE_DEBUT_EMPRUNT), MAX(HEURE_DEBUT_EMPRUNT)
+--     FROM
+--         EMPRUNTS
+--     GROUP BY
+--         ID_ADHERENT
+-- ;
+
+-- ============================================================
+--    Contraintes procédures utiles
+-- ============================================================
+
+-- Prédit si un adhérent est actuellement en train d'emprunter un vélo
+-- DELIMITER //
+-- CREATE PROCEDURE adherent_est_sur_velo(IN id_adherent INT)
+-- BEGIN
+--     -- TODO: utiliser la vue avant et verifier station pas nulle
+-- END //
+-- DELIMITER ;
+
+-- ============================================================
 --    Contraintes d'intégrité supplémentaires
 -- ============================================================
 
 -- On fait l'hypothèse que pour rendre un vélo on a ce processus :
---    1. On stocke le vélo (colonne STATION de VELOS)
+--    1. On stocke le vélo (colonne ID_STATION de VELOS)
 --    2. On remplit l'emprunt (colonnes *_FIN)
+
+-- Les colonnes *_FIN doivent toutes être remplies si une seule est remplie
+--    i.e on doit remplir toutes les *_FIN quand on rend un vélo
+DELIMITER //
+
+CREATE OR REPLACE TRIGGER CHAMPS_ENCORE_NULL
+BEFORE UPDATE ON EMPRUNTS FOR EACH ROW
+BEGIN
+    IF NEW.ID_STATION IS NOT NULL OR NEW.DATE_FIN_EMPRUNT IS NOT NULL OR NEW.HEURE_FIN_EMPRUNT IS NOT NULL OR NEW.KM_FIN_EMPRUNT IS NOT NULL THEN
+        IF NEW.ID_STATION IS NULL OR NEW.DATE_FIN_EMPRUNT IS NULL OR NEW.HEURE_FIN_EMPRUNT IS NULL OR NEW.KM_FIN_EMPRUNT IS NULL THEN
+            SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Certains champs FIN sont toujours NULL';
+        END IF;
+    END IF;
+END; //
+
+-- Le velo n'a pas été affecté, avant, à la station de fin de l'emprunt
+DELIMITER //
+
+CREATE OR REPLACE TRIGGER VELO_MAUVAISE_STATION
+BEFORE UPDATE ON EMPRUNTS FOR EACH ROW
+BEGIN
+    IF NEW.ID_STATION IS NOT NULL THEN
+        DECLARE station_velo INT;
+
+        SELECT ID_STATION FROM VELOS WHERE VELOS.ID_VELO = NEW.ID_VELO INTO station_velo;
+
+        IF station_velo <> NEW.ID_STATION_FIN THEN
+            SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Le vélo n a pas été rendu dans la station de fin désignée';
+        END IF;
+    END IF;
+END; //
+
+DELIMITER ;
 
 -- Supprimer un adhérent alors qu'il est en train d'emprunter un vélo
 -- DELIMITER //
