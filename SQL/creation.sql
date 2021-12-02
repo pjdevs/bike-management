@@ -237,7 +237,7 @@ BEGIN
     SELECT count(*) FROM VELOS WHERE VELOS.ID_STATION = NEW.ID_STATION_FIN INTO nb_velos_station;
     SELECT NOMBRE_BORNES_STATION FROM STATIONS WHERE ID_STATION = NEW.ID_STATION_FIN INTO nb_bornes;
 
-    IF nb_velos_station >= nb_bornes THEN
+    IF nb_velos_station > nb_bornes THEN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Pas assez de bornes à cette station, elle est pleine';
     END IF;
 END; //
