@@ -62,3 +62,23 @@ GROUP BY
     ID_ADHERENT 
 HAVING 
     COUNT(*)>=2;
+
+
+-- ========================================================================================================================
+--     Le nombre de places disponicles par station.
+-- ========================================================================================================================
+SELECT 
+        STATIONS.ID_STATION, STATIONS.ADRESSE_STATION, STATIONS.NOMBRE_BORNES_STATION-NB_VELOS AS NB_PLACES_DISPO 
+    FROM
+        STATIONS 
+    JOIN 
+        (SELECT 
+            ID_STATION, COUNT(*) AS NB_VELOS 
+        FROM 
+            VELOS 
+        GROUP BY 
+            ID_STATION 
+        HAVING 
+            ID_STATION IS NOT NULL) AS NB_VELOS_STATIONS
+    USING(ID_STATION)
+;
