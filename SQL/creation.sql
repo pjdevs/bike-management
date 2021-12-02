@@ -90,31 +90,34 @@ CREATE TABLE DISTANCIER(
 
 -- Vue sur le dernier emprunt d'un adhérent
 -- TODO: a corriger marche presque
--- CREATE OR REPLACE VIEW DERNIER_EMPRUNT_ADHERENT
--- AS
---     SELECT
---         ID_ADHERENT, ID_EMPRUNT
---     FROM
---         (SELECT 
---             E.ID_ADHERENT, E.ID_EMPRUNT, E.HEURE_DEBUT_EMPRUNT
---         FROM
---             EMPRUNTS E
---         NATURAL JOIN
---             (SELECT
---                 ID_ADHERENT, MAX(DATE_DEBUT_EMPRUNT) DATE_DEBUT_EMPRUNT
---             FROM
---                 EMPRUNTS
---             GROUP BY
---                 ID_ADHERENT) AS TEMP
---         ) AS EMPRUNTS_DATES_MAX
---     NATURAL JOIN
---         (SELECT
---             ID_ADHERENT, MAX(HEURE_DEBUT_EMPRUNT) HEURE_DEBUT_EMPRUNT
---         FROM
---             EMPRUNTS_DATES_MAX
---         GROUP BY
---             ID_ADHERENT) AS EMPRUNTS_HEURES_MAX
--- ;
+CREATE OR REPLACE VIEW EMPRUNTS_DATES_MAX
+AS
+    SELECT 
+        E.ID_ADHERENT, E.ID_EMPRUNT, E.HEURE_DEBUT_EMPRUNT
+    FROM
+        EMPRUNTS E
+    NATURAL JOIN
+        (SELECT
+            ID_ADHERENT, MAX(DATE_DEBUT_EMPRUNT) DATE_DEBUT_EMPRUNT
+        FROM
+            EMPRUNTS
+        GROUP BY
+            ID_ADHERENT) AS TEMP
+
+CREATE OR REPLACE VIEW DERNIER_EMPRUNT_ADHERENT
+AS
+    SELECT
+        ID_ADHERENT, ID_EMPRUNT
+    FROM
+        EMPRUNTS_DATES_MAX
+    NATURAL JOIN
+        (SELECT
+            ID_ADHERENT, MAX(HEURE_DEBUT_EMPRUNT) HEURE_DEBUT_EMPRUNT
+        FROM
+            EMPRUNTS_DATES_MAX
+        GROUP BY
+            ID_ADHERENT) AS EMPRUNTS_HEURES_MAX
+;
 
 -- ============================================================
 --    Contraintes procédures utiles
