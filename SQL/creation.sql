@@ -180,15 +180,33 @@ BEGIN
 END; //
 
 -- Supprimer un adhérent alors qu'il est en train d'emprunter un vélo
--- DELIMITER //
+DELIMITER //
 
--- CREATE OR REPLACE TRIGGER ADHERENT_PAS_RENDU
--- BEFORE DELETE ON ADHERENTS FOR EACH ROW
--- BEGIN
---     -- Verifier il n'a aucun emprunt en cours
--- END; //
+CREATE OR REPLACE TRIGGER ADHERENT_PAS_RENDU
+BEFORE DELETE ON ADHERENTS FOR EACH ROW
+BEGIN
+    DECLARE est_sur_velo BOOLEAN;
 
--- DELIMITER ;
+    SELECT
+        ID_STATION_FIN IS NULL
+    FROM
+        EMPRUNTS
+    WHERE
+        ID_EMPRUNT = (SELECT
+                        ID_EMPRUNT
+                      FROM
+                          DERNIER_EMPRUNT_ADHERENT
+                      WHERE
+                          ID_ADHERENT = OLD.ID_ADHERENT)
+    INTO
+        est_sur_velo;
+
+    IF est_sur_velo THEN
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Impossible de de supprimer un adhérent qui a un trajet en cours';
+    END IF;
+END; //
+
+DELIMITER ;
 
 -- On emprunte un vélo à une station alors qu'il n'y est pas
 CREATE OR REPLACE TRIGGER VELO_PAS_LA
@@ -245,7 +263,17 @@ BEGIN
 END; //
 
 -- Rendre un vélo avant la date d'emprunt
--- TODO
+CREATE OR REPLACE TRIGGER RENDU_AVANT_EMPRUNT
+BEFORE UPDATE ON EMPRUNTS FOR EACH ROW
+BEGIN
+    DECLARE date_debut_emprunt DATE;
+    
+    SELECT DATE_DEBUT_EMPRUNT FROM EMPRUNTS WHERE EMPRUNTS.ID_EMPRUNT = NEW.ID_EMPRUNT INTO date_debut_emprunt;
+
+    IF NEW.DATE_FIN_EMPRUNT < date_debut_emprunt THEN
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Un vélo ne peut pas être rendu avant qu il ait été emprunté';
+    END IF;
+END; //
 
 -- Emprunter un vélo par un adhérent qui est déjà sur un vélo
 CREATE OR REPLACE TRIGGER DEJA_EMPRUNT
@@ -274,7 +302,17 @@ BEGIN
 END; //
 
 -- Vérifier station nulle au moment de l'emprunt 
--- TODO
+CREATE OR REPLACE TRIGGER VELO_ENCORE_DANS_STATION
+BEFORE INSERT ON EMPRUNTS FOR EACH ROW
+BEGIN
+    DECLARE id_station_velo INT;
+    
+    SELECT ID_STATION FROM VELOS WHERE VELOS.ID_VELO = NEW.ID_VELO INTO id_station_velo;
+
+    IF id_station_velo IS NOT NULL THEN
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Le vélo n a pas été sortit de sa station (ID_STATION IS NOT NULL) avant d etre emprunté';
+    END IF;
+END; //
 
 -- Diminuer les kilomètres d'un vélo
 CREATE OR REPLACE TRIGGER DIMINUER_KM_VELO
@@ -402,12 +440,10 @@ END //
 -- Prodécure : Supprime tout les adhérents et on met à jour l'ID adhérent de tous les emprunts
 CREATE OR REPLACE PROCEDURE supprimer_adherent_all()
 BEGIN
-
-SET foreign_key_checks = 0;
-UPDATE EMPRUNTS SET ID_ADHERENT=-1;
-DELETE FROM ADHERENTS; 
-SET foreign_key_checks = 1;
-
+    SET foreign_key_checks = 0;
+    UPDATE EMPRUNTS SET ID_ADHERENT=-1;
+    DELETE FROM ADHERENTS; 
+    SET foreign_key_checks = 1;
 END //
 
 -- Prodécure : Supprime un adherent spécifique et on met à jour l'ID adhérent des emprunts de l'adhérent
