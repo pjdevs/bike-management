@@ -1,78 +1,39 @@
+
+-- ============================================================
+--    Ajouts dans la base
+-- ============================================================
+
+-- Appel exemple: => Création d'un vélo en station 5
+CALL ajout_velo('Reference G2I2', "Marque ENSEIRB", date('2021-12-24'), 0, 'NEUF', 100, 5);
+
+-- Appel exemple: => Emprunt le 2021-11-15 à 13:30:00 à la station 1 pour l'adherent 2 avec le velo 3
+-- L'emprunt n'est pas terminé donc automatiquement le vélo est en cours d'utilisation (Pas de station)
+CALL ajout_emprunt(date('2021-11-15'), time('13:30:00'), 1, 2, 3);
+    
+-- Appel exemple: => Création d'un adhérent dans la station 3
+CALL ajout_adherent("GAUDY", "Antoine", 'ENSEIRB 33420 Talence', date('2021-12-01'), 3);
+
 -- ============================================================
 --    Mise à jour de la base
 -- ============================================================
 
-    -- ==============================
-    --    Création d'un trajet 
-    -- ==============================
+-- Appel exemple: => Fin de l'emprunt du vélo concernant l'emprunt 8
+-- Le vélo est rendu le 2021-11-15 à 8:00:00 avec un kilométrage de 6 et dans la station n°6
+CALL fin_emprunt(8, date('2021-11-15'), time('8:00:00'), 6, 6);
 
+-- ============================================================
+--    Suppressions
+-- ============================================================
 
+-- Appel exemple: => Tous les utilisateurs sont supprimés et les emprunts mis à jour
+CALL delete_adherent_all();
 
+-- Appel exemple:  => L'utilisateur 2 est supprimé et ses emprunts sont mis à jour
+CALL delete_adherent_id(2);
 
-    -- ==============================
-    --    Suppression 
-    -- ==============================
+-- Appel exemple:  => Plus aucun emprunt
+CALL delete_emprunt_all()
 
-
--- Prodécure : Supprime tout les adhérents et on met à jour les ID adhérents des emprunts
--- Appel exemple: CALL delete_adherent_all(); => Tous les utilisateurs sont supprimés et les emprunts mis à jour
-
-DELIMITER //
-CREATE PROCEDURE delete_adherent_all()
-BEGIN
-
-SET foreign_key_checks = 0;
-UPDATE EMPRUNTS SET ID_ADHERENT=-1;
-DELETE FROM ADHERENTS; 
-SET foreign_key_checks = 1;
-
-END //
-DELIMITER ;
-
-
--- Prodécure : Supprime un adherent spécifique et on met à jour les ID adhérents des emprunts
--- Appel exemple: CALL delete_adherent_id(2); => L'utilisateur 2 est supprimé et ses emprunts sont mis à jour
-
-DELIMITER //
-CREATE PROCEDURE delete_adherent_id
-(IN id INT)
-BEGIN
-
-SET foreign_key_checks = 0;
-UPDATE EMPRUNTS SET ID_ADHERENT=-1 WHERE ID_ADHERENT=id;
-DELETE FROM ADHERENTS WHERE ID_ADHERENT=id; 
-SET foreign_key_checks = 1;
-
-END //
-DELIMITER ;
-
-
--- Procédure : Supprime tous les emprunts
--- Appel exemple: CALL delete_emprunt_all() => Plus aucun emprunt
-
-DELIMITER //
-CREATE PROCEDURE delete_emprunt_all ()
-BEGIN
-
-DELETE FROM EMPRUNTS;
-
-END //
-DELIMITER ;
-
-
--- Prodécure : Supprime un emprunt spécifique
--- Appel exemple: CALL delete_emprunt_id(2); => L'emprunt avec l'ID 2 est supprimé
-
-DELIMITER //
-CREATE PROCEDURE delete_emprunt_id
-(IN id INT )
-BEGIN
-
-DELETE FROM EMPRUNTS
-WHERE ID_EMPRUNT=id;
-
-END //
-DELIMITER ;
-
-
+-- Appel exemple:  => L'emprunt avec l'ID 2 est supprimé
+CALL delete_emprunt_id(2);
 

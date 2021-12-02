@@ -88,28 +88,60 @@ CREATE TABLE DISTANCIER(
 --    Vues utiles
 -- ============================================================
 
+-- Vue d'aide pour récupérer le dernier emprunt d'un adhérent
+CREATE OR REPLACE VIEW EMPRUNTS_DATES_MAX
+AS
+    SELECT 
+        E.ID_ADHERENT, E.ID_EMPRUNT, E.HEURE_DEBUT_EMPRUNT
+    FROM
+        EMPRUNTS E
+    NATURAL JOIN
+        (SELECT
+            ID_ADHERENT, MAX(DATE_DEBUT_EMPRUNT) DATE_DEBUT_EMPRUNT
+        FROM
+            EMPRUNTS
+        GROUP BY
+            ID_ADHERENT) AS TEMP
+
 -- Vue sur le dernier emprunt d'un adhérent
--- TODO: a corriger marche presque
--- CREATE OR REPLACE VIEW DERNIER_EMPRUNT_ADHERENT
--- AS 
---     SELECT 
---         *, MAX(DATE_DEBUT_EMPRUNT), MAX(HEURE_DEBUT_EMPRUNT)
---     FROM
---         EMPRUNTS
---     GROUP BY
---         ID_ADHERENT
--- ;
+CREATE OR REPLACE VIEW DERNIER_EMPRUNT_ADHERENT
+AS
+    SELECT
+        ID_ADHERENT, ID_EMPRUNT
+    FROM
+        EMPRUNTS_DATES_MAX
+    NATURAL JOIN
+        (SELECT
+            ID_ADHERENT, MAX(HEURE_DEBUT_EMPRUNT) HEURE_DEBUT_EMPRUNT
+        FROM
+            EMPRUNTS_DATES_MAX
+        GROUP BY
+            ID_ADHERENT) AS EMPRUNTS_HEURES_MAX
+;
 
 -- ============================================================
---    Contraintes procédures utiles
+--    Fonctions utiles
 -- ============================================================
 
 -- Prédit si un adhérent est actuellement en train d'emprunter un vélo
 -- DELIMITER //
--- CREATE PROCEDURE adherent_est_sur_velo(IN id_adherent INT)
+
+-- CREATE OR REPLACE FUNCTION adherent_est_sur_velo(id_adherent INT) RETURNS BOOLEAN
 -- BEGIN
---     -- TODO: utiliser la vue avant et verifier station pas nulle
+--     DECLARE est_sur_velo INT;
+
+--     SELECT
+--         ID_STATION_FIN
+--     FROM
+--         EMPRUNTS
+--     WHERE
+--         ID_EMPRUNT = (SELECT ID_EMPRUNT FROM DERNIER_EMPRUNT_ADHERENT WHERE ID_ADHERENT = id_adherent)
+--     INTO
+--         est_sur_velo;
+
+--     RETURN est_sur_velo;
 -- END //
+
 -- DELIMITER ;
 
 -- ============================================================
@@ -168,7 +200,7 @@ DELIMITER ;
 DELIMITER //
 
 CREATE OR REPLACE TRIGGER VELO_PAS_LA
-BEFORE UPDATE ON EMPRUNTS FOR EACH ROW
+BEFORE INSERT ON EMPRUNTS FOR EACH ROW
 BEGIN
     DECLARE velo_est_dans_station INT;
 
@@ -204,7 +236,7 @@ DELIMITER ;
 DELIMITER //
 
 CREATE OR REPLACE TRIGGER KM_EMPRUNT_DIFFERENT
-BEFORE UPDATE ON EMPRUNTS FOR EACH ROW
+BEFORE INSERT ON EMPRUNTS FOR EACH ROW
 BEGIN
     DECLARE nb_km_velo INT;
 
@@ -221,7 +253,7 @@ DELIMITER ;
 DELIMITER //
 
 CREATE OR REPLACE TRIGGER EMPRUNT_AVANT_DATE
-BEFORE UPDATE ON EMPRUNTS FOR EACH ROW
+BEFORE INSERT ON EMPRUNTS FOR EACH ROW
 BEGIN
     DECLARE date_service_velo DATE;
     
@@ -231,6 +263,9 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Un vélo ne peut pas être emprunté à une date inférieure à sa date de mise en service';
     END IF;
 END; //
+
+-- Rendre un vélo avant la date d'emprunt
+-- TODO
 
 DELIMITER ;
 
@@ -260,3 +295,199 @@ BEGIN
 END; //
 
 DELIMITER ;
+
+
+
+
+
+
+
+
+
+
+
+
+-- ============================================================
+--    Ajouts dans la base
+-- ============================================================
+
+
+    -- ==============================
+    --    Ajout d'un vélo 
+    -- ==============================
+
+DELIMITER //
+CREATE OR REPLACE PROCEDURE ajout_velo
+(
+    IN reference VARCHAR(20),
+    IN marque VARCHAR(20), 
+    IN date_service DATE,
+    IN km INT,
+    IN etat VARCHAR(10), 
+    IN batterie INT,
+    IN id_stat INT
+)
+BEGIN
+
+DECLARE id INT; 
+SELECT max(ID_VELO) from VELOS INTO id;
+SET id = id + 1; 
+
+insert into VELOS values (id, reference, marque, date_service, km, etat, batterie, id_stat);
+
+END //
+DELIMITER ;
+
+
+    -- ==============================
+    --    Ajout d'un trajet 
+    -- ==============================
+
+DELIMITER //
+CREATE OR REPLACE PROCEDURE ajout_emprunt
+(
+    IN date_debut DATE,
+    IN heure_debut TIME, 
+    IN station_debut INT,
+    IN adherent INT,
+    IN velo INT
+)
+BEGIN
+
+DECLARE km INT; 
+DECLARE id INT; 
+
+SELECT max(ID_EMPRUNT) from EMPRUNTS INTO id;
+SET id = id + 1;
+
+SELECT KM_VELO from VELOS WHERE ID_VELO=velo INTO km;
+
+insert into EMPRUNTS values (id, date_debut, heure_debut, km, station_debut, NULL, NULL, NULL, NULL, adherent, velo);
+UPDATE VELOS SET ID_STATION = NULL WHERE ID_VELO=velo;
+
+
+END //
+DELIMITER ;
+
+
+    -- ==============================
+    --    Ajout d'un adhérent 
+    -- ==============================
+
+DELIMITER //
+CREATE OR REPLACE PROCEDURE ajout_adherent
+(
+    IN nom VARCHAR(50),
+    IN prenom VARCHAR(50), 
+    IN adresse VARCHAR(100),
+    IN date_adhesion DATE,
+    IN commune INT
+)
+BEGIN
+
+DECLARE id INT; 
+SELECT max(ID_ADHERENT) from ADHERENTS INTO id;
+SET id = id + 1; 
+
+insert into ADHERENTS values (id, nom, prenom, adresse, date_adhesion, commune);
+
+END //
+DELIMITER ;
+
+
+-- ============================================================
+--    Mise à jour de la base
+-- ============================================================
+
+    -- ==============================
+    --    Mise à jour d'un emprunt
+    -- ==============================
+
+DELIMITER //
+CREATE OR REPLACE PROCEDURE fin_emprunt
+(
+    IN emprunt INT,
+    IN date_fin DATE,
+    IN heure_fin TIME, 
+    IN km_fin INT,
+    IN station_fin INT
+)
+BEGIN
+
+DECLARE velo INT; 
+SELECT ID_VELO from EMPRUNTS WHERE ID_EMPRUNT = emprunt INTO velo; 
+UPDATE VELOS SET ID_STATION = station_fin, KM_VELO = km_fin WHERE ID_VELO = velo;
+
+UPDATE EMPRUNTS SET DATE_FIN_EMPRUNT = date_fin, HEURE_FIN_EMPRUNT = heure_fin, KM_FIN_EMPRUNT = km_fin, ID_STATION_FIN = station_fin WHERE ID_EMPRUNT=emprunt;
+
+END //
+DELIMITER ;
+
+-- ============================================================
+--    Suppressions
+-- ============================================================
+
+
+    -- ==============================
+    --    Suppression d'adhérents
+    -- ==============================
+
+
+-- Prodécure : Supprime tout les adhérents et on met à jour l'ID adhérent de tous les emprunts
+DELIMITER //
+CREATE OR REPLACE PROCEDURE delete_adherent_all()
+BEGIN
+
+SET foreign_key_checks = 0;
+UPDATE EMPRUNTS SET ID_ADHERENT=-1;
+DELETE FROM ADHERENTS; 
+SET foreign_key_checks = 1;
+
+END //
+DELIMITER ;
+
+
+-- Prodécure : Supprime un adherent spécifique et on met à jour l'ID adhérent des emprunts de l'adhérent
+DELIMITER //
+CREATE OR REPLACE PROCEDURE delete_adherent_id
+(IN id INT)
+BEGIN
+
+SET foreign_key_checks = 0;
+UPDATE EMPRUNTS SET ID_ADHERENT=-1 WHERE ID_ADHERENT=id;
+DELETE FROM ADHERENTS WHERE ID_ADHERENT=id; 
+SET foreign_key_checks = 1;
+
+END //
+DELIMITER ;
+
+
+    -- ==============================
+    --    Suppression d'emprunts
+    -- ==============================
+
+-- Procédure : Supprime tous les emprunts
+DELIMITER //
+CREATE OR REPLACE PROCEDURE delete_emprunt_all ()
+BEGIN
+
+DELETE FROM EMPRUNTS;
+
+END //
+DELIMITER ;
+
+-- Prodécure : Supprime un emprunt spécifique
+DELIMITER //
+CREATE OR REPLACE PROCEDURE delete_emprunt_id
+(IN id INT )
+BEGIN
+
+DELETE FROM EMPRUNTS
+WHERE ID_EMPRUNT=id;
+
+END //
+DELIMITER ;
+
+    -- ==============================
+    --    Suppression de vélos
+    -- ==============================
