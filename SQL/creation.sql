@@ -454,6 +454,45 @@ BEGIN
 END //
 DELIMITER ;
 
+    -- ==============================
+    --    Mise à jour d'un vélo
+    -- ==============================
+
+-- Prodécure : Met à jour l'état d'un vélo
+DELIMITER //
+CREATE OR REPLACE PROCEDURE maj_velo_etat(IN id INT, IN etat VARCHAR(10))
+BEGIN
+
+    UPDATE VELOS SET ETAT_VELO=etat WHERE ID_VELO=id;
+
+END //
+DELIMITER ;
+
+-- Prodécure : Met à jour la batterie d'un vélo
+DELIMITER //
+CREATE OR REPLACE PROCEDURE maj_velo_batterie(IN id INT, IN batterie INT)
+BEGIN
+
+    UPDATE VELOS SET BATTERIE_VELO=batterie WHERE ID_VELO=id;
+
+END //
+DELIMITER ;
+
+    -- ==============================
+    --    Mise à jour d'un adhérent
+    -- ==============================
+
+-- Prodécure : Met à jour l'adresse & commune d'un adhérent
+DELIMITER //
+CREATE OR REPLACE PROCEDURE maj_adherent_adresse(IN id INT, IN adresse VARCHAR(100), IN commune INT)
+BEGIN
+
+    UPDATE ADHERENTS SET ADRESSE_ADHERENT=adresse, ID_COMMUNE=commune WHERE ID_ADHERENT=id;
+
+END //
+DELIMITER ;
+
+
 -- ============================================================
 --    Suppressions
 -- ============================================================
@@ -513,3 +552,14 @@ DELIMITER ;
     -- ==============================
     --    Suppression de vélos
     -- ==============================
+
+-- Prodécure : Supprime un vélo spécifique et tous les emprunts effectués avec ce vélo
+DELIMITER //
+CREATE OR REPLACE PROCEDURE supprimer_velo_id
+(IN id INT)
+BEGIN
+
+    DELETE FROM EMPRUNTS WHERE ID_VELO=id;
+    DELETE FROM VELOS WHERE ID_VELO=id;
+END //
+DELIMITER ;
