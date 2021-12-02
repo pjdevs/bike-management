@@ -102,6 +102,7 @@ AS
             EMPRUNTS
         GROUP BY
             ID_ADHERENT) AS TEMP
+;
 
 -- Vue sur le dernier emprunt d'un adhérent
 CREATE OR REPLACE VIEW DERNIER_EMPRUNT_ADHERENT
