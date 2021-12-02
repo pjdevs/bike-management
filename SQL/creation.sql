@@ -393,13 +393,13 @@ BEGIN
     DECLARE km INT; 
     DECLARE id INT; 
 
-    SELECT max(ID_EMPRUNT) from EMPRUNTS INTO id;
+    SELECT MAX(ID_EMPRUNT) from EMPRUNTS INTO id;
     SET id = id + 1;
 
     SELECT KM_VELO from VELOS WHERE ID_VELO=velo INTO km;
 
-    INSERT INTO EMPRUNTS VALUES (id, date_debut, heure_debut, km, station_debut, NULL, NULL, NULL, NULL, adherent, velo);
     UPDATE VELOS SET ID_STATION = NULL WHERE ID_VELO=velo;
+    INSERT INTO EMPRUNTS VALUES (id, date_debut, heure_debut, km, station_debut, NULL, NULL, NULL, NULL, adherent, velo);
 END //
 DELIMITER ;
 
