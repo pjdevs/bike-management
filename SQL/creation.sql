@@ -487,3 +487,7 @@ WHERE ID_EMPRUNT=id;
 
 END //
 DELIMITER ;
+
+    -- ==============================
+    --    Suppression de vélos
+    -- ==============================
