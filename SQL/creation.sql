@@ -88,8 +88,7 @@ CREATE TABLE DISTANCIER(
 --    Vues utiles
 -- ============================================================
 
--- Vue sur le dernier emprunt d'un adhérent
--- TODO: a corriger marche presque
+-- Vue d'aide pour récupérer le dernier emprunt d'un adhérent
 CREATE OR REPLACE VIEW EMPRUNTS_DATES_MAX
 AS
     SELECT 
@@ -104,6 +103,7 @@ AS
         GROUP BY
             ID_ADHERENT) AS TEMP
 
+-- Vue sur le dernier emprunt d'un adhérent
 CREATE OR REPLACE VIEW DERNIER_EMPRUNT_ADHERENT
 AS
     SELECT
@@ -120,15 +120,28 @@ AS
 ;
 
 -- ============================================================
---    Contraintes procédures utiles
+--    Fonctions utiles
 -- ============================================================
 
 -- Prédit si un adhérent est actuellement en train d'emprunter un vélo
 -- DELIMITER //
--- CREATE PROCEDURE adherent_est_sur_velo(IN id_adherent INT)
+
+-- CREATE OR REPLACE FUNCTION adherent_est_sur_velo(id_adherent INT) RETURNS BOOLEAN
 -- BEGIN
---     -- TODO: utiliser la vue avant et verifier station pas nulle
+--     DECLARE est_sur_velo INT;
+
+--     SELECT
+--         ID_STATION_FIN
+--     FROM
+--         EMPRUNTS
+--     WHERE
+--         ID_EMPRUNT = (SELECT ID_EMPRUNT FROM DERNIER_EMPRUNT_ADHERENT WHERE ID_ADHERENT = id_adherent)
+--     INTO
+--         est_sur_velo;
+
+--     RETURN est_sur_velo;
 -- END //
+
 -- DELIMITER ;
 
 -- ============================================================
@@ -250,6 +263,9 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Un vélo ne peut pas être emprunté à une date inférieure à sa date de mise en service';
     END IF;
 END; //
+
+-- Rendre un vélo avant la date d'emprunt
+-- TODO
 
 DELIMITER ;
 
