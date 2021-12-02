@@ -42,26 +42,51 @@ WHERE
 
 
 -- ========================================================================================================================
---     Liste des adhérents qui ont emprunté plusieurs au moins deux vélos différents pour un jour donné (ici le 12/11/2021)
+--     Liste des adhérents qui ont emprunté au moins deux vélos différents pour un jour donné (ici le 08/11/2021)
 -- ========================================================================================================================
 SELECT 
     * 
 FROM 
     (SELECT 
-        ADHERENTS.*, EMPRUNTS.ID_VELO 
+        ADHERENTS.*
     FROM 
         ADHERENTS 
     JOIN 
         EMPRUNTS 
     USING(ID_ADHERENT) 
     WHERE 
-        DATE_DEBUT_EMPRUNT=date('2021-11-12') 
+        DATE_DEBUT_EMPRUNT=date('2021-11-08') 
     GROUP BY 
     ADHERENTS.ID_ADHERENT, EMPRUNTS.ID_VELO) AS TEMP 
 GROUP BY 
     ID_ADHERENT 
 HAVING 
     COUNT(*)>=2;
+
+-- ========================================================================================================================
+--     Liste des vélos qui ont été emprunté au moins deux fois pour un jour donné (ici le 08/11/2021)
+-- ========================================================================================================================
+
+SELECT 
+    *
+FROM 
+    (
+        SELECT
+            VELOS.*
+        FROM 
+            VELOS 
+        JOIN
+            EMPRUNTS
+        USING(ID_VELO)
+        WHERE 
+            DATE_DEBUT_EMPRUNT=date('2021-11-08')
+        GROUP BY 
+            VELOS.ID_VELO, EMPRUNTS.ID_EMPRUNT) AS TEMP
+GROUP BY    
+    ID_VELO
+HAVING 
+    COUNT(*)>=2;
+
 
 
 -- ========================================================================================================================
