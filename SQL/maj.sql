@@ -1,5 +1,5 @@
 -- ============================================================
---    Mise à jour de la base
+--    Ajouts dans la base
 -- ============================================================
 
     -- ==============================
@@ -7,7 +7,7 @@
     -- ==============================
 
 DELIMITER //
-CREATE PROCEDURE add_bike
+CREATE PROCEDURE ajout_velo
 (
     IN reference VARCHAR(20),
     IN marque VARCHAR(20), 
@@ -29,15 +29,15 @@ END //
 DELIMITER ;
 
 
-DROP PROCEDURE add_bike;
-CALL add_bike('test', "test", date('2021-11-08'), 0, 'NEUF', 100, 3);
+DROP PROCEDURE ajout_velo;
+CALL ajout_velo('test', "test", date('2021-11-08'), 0, 'NEUF', 100, 3);
 
     -- ==============================
     --    Ajout d'un trajet 
     -- ==============================
 
 DELIMITER //
-CREATE PROCEDURE add_journey
+CREATE PROCEDURE ajout_emprunt
 (
     IN date_debut DATE,
     IN heure_debut TIME, 
@@ -62,15 +62,75 @@ UPDATE VELOS SET ID_STATION = NULL WHERE ID_VELO=velo;
 END //
 DELIMITER ;
 
-DROP PROCEDURE add_journey;
-CALL add_journey(date('2021-11-15'), time('13:30:00'), 1, 4, 4);
-    
+DROP PROCEDURE ajout_emprunt;
+CALL ajout_emprunt(date('2021-11-15'), time('13:30:00'), 1, 4, 4);
     
 
+    -- ==============================
+    --    Ajout d'un adhérent 
+    -- ==============================
+
+DELIMITER //
+CREATE PROCEDURE ajout_adherent
+(
+    IN nom VARCHAR(50),
+    IN prenom VARCHAR(50), 
+    IN adresse VARCHAR(100),
+    IN date_adhesion DATE,
+    IN commune INT
+)
+BEGIN
+
+DECLARE id INT; 
+SELECT max(ID_ADHERENT) from ADHERENTS INTO id;
+SET id = id + 1; 
+
+insert into ADHERENTS values (id, nom, prenom, adresse, date_adhesion, commune);
+
+END //
+DELIMITER ;
+
+
+CALL ajout_adherent("GAUDY", "Antoine", 'Perdu dans le fossé', date('2021-12-01'), 5);
+
+
+-- ============================================================
+--    Mise à jour de la base
+-- ============================================================
+
+    -- ==============================
+    --    Mise à jour d'un emprunt
+    -- ==============================
+
+DELIMITER //
+CREATE PROCEDURE fin_emprunt
+(
+    IN emprunt INT,
+    IN date_fin DATE,
+    IN heure_fin TIME, 
+    IN km_fin INT,
+    IN station_fin INT
+)
+BEGIN
+
+DECLARE velo INT; 
+SELECT ID_VELO from EMPRUNTS WHERE ID_EMPRUNT = emprunt INTO velo; 
+UPDATE VELOS SET ID_STATION = station_fin, KM_VELO = km_fin WHERE ID_VELO = velo;
+
+UPDATE EMPRUNTS SET DATE_FIN_EMPRUNT = date_fin, HEURE_FIN_EMPRUNT = heure_fin, KM_FIN_EMPRUNT = km_fin, ID_STATION_FIN = station_fin WHERE ID_EMPRUNT=emprunt;
+
+END //
+DELIMITER ;
+
+CALL fin_emprunt(9, date('2021-11-15'), time('13:50:00'), 5, 5);
+
+-- ============================================================
+--    Suppressions
+-- ============================================================
 
 
     -- ==============================
-    --    Suppression 
+    --    Suppression d'adhérents
     -- ==============================
 
 
@@ -110,6 +170,10 @@ DELIMITER ;
 -- Appel exemple:  => L'utilisateur 2 est supprimé et ses emprunts sont mis à jour
 CALL delete_adherent_id(2);
 
+
+    -- ==============================
+    --    Suppression d'emprunts
+    -- ==============================
 
 -- Procédure : Supprime tous les emprunts
 DELIMITER //
