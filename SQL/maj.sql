@@ -122,7 +122,7 @@ UPDATE EMPRUNTS SET DATE_FIN_EMPRUNT = date_fin, HEURE_FIN_EMPRUNT = heure_fin, 
 END //
 DELIMITER ;
 
-CALL fin_emprunt(9, date('2021-11-15'), time('13:50:00'), 5, 5);
+CALL fin_emprunt(8, date('2021-11-15'), time('8:00:00'), 6, 7);
 
 -- ============================================================
 --    Suppressions
