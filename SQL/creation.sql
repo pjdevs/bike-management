@@ -295,3 +295,195 @@ BEGIN
 END; //
 
 DELIMITER ;
+
+
+
+
+
+
+
+
+
+
+
+
+-- ============================================================
+--    Ajouts dans la base
+-- ============================================================
+
+
+    -- ==============================
+    --    Ajout d'un vélo 
+    -- ==============================
+
+DELIMITER //
+CREATE OR REPLACE PROCEDURE ajout_velo
+(
+    IN reference VARCHAR(20),
+    IN marque VARCHAR(20), 
+    IN date_service DATE,
+    IN km INT,
+    IN etat VARCHAR(10), 
+    IN batterie INT,
+    IN id_stat INT
+)
+BEGIN
+
+DECLARE id INT; 
+SELECT max(ID_VELO) from VELOS INTO id;
+SET id = id + 1; 
+
+insert into VELOS values (id, reference, marque, date_service, km, etat, batterie, id_stat);
+
+END //
+DELIMITER ;
+
+
+    -- ==============================
+    --    Ajout d'un trajet 
+    -- ==============================
+
+DELIMITER //
+CREATE OR REPLACE PROCEDURE ajout_emprunt
+(
+    IN date_debut DATE,
+    IN heure_debut TIME, 
+    IN station_debut INT,
+    IN adherent INT,
+    IN velo INT
+)
+BEGIN
+
+DECLARE km INT; 
+DECLARE id INT; 
+
+SELECT max(ID_EMPRUNT) from EMPRUNTS INTO id;
+SET id = id + 1;
+
+SELECT KM_VELO from VELOS WHERE ID_VELO=velo INTO km;
+
+insert into EMPRUNTS values (id, date_debut, heure_debut, km, station_debut, NULL, NULL, NULL, NULL, adherent, velo);
+UPDATE VELOS SET ID_STATION = NULL WHERE ID_VELO=velo;
+
+
+END //
+DELIMITER ;
+
+
+    -- ==============================
+    --    Ajout d'un adhérent 
+    -- ==============================
+
+DELIMITER //
+CREATE OR REPLACE PROCEDURE ajout_adherent
+(
+    IN nom VARCHAR(50),
+    IN prenom VARCHAR(50), 
+    IN adresse VARCHAR(100),
+    IN date_adhesion DATE,
+    IN commune INT
+)
+BEGIN
+
+DECLARE id INT; 
+SELECT max(ID_ADHERENT) from ADHERENTS INTO id;
+SET id = id + 1; 
+
+insert into ADHERENTS values (id, nom, prenom, adresse, date_adhesion, commune);
+
+END //
+DELIMITER ;
+
+
+-- ============================================================
+--    Mise à jour de la base
+-- ============================================================
+
+    -- ==============================
+    --    Mise à jour d'un emprunt
+    -- ==============================
+
+DELIMITER //
+CREATE OR REPLACE PROCEDURE fin_emprunt
+(
+    IN emprunt INT,
+    IN date_fin DATE,
+    IN heure_fin TIME, 
+    IN km_fin INT,
+    IN station_fin INT
+)
+BEGIN
+
+DECLARE velo INT; 
+SELECT ID_VELO from EMPRUNTS WHERE ID_EMPRUNT = emprunt INTO velo; 
+UPDATE VELOS SET ID_STATION = station_fin, KM_VELO = km_fin WHERE ID_VELO = velo;
+
+UPDATE EMPRUNTS SET DATE_FIN_EMPRUNT = date_fin, HEURE_FIN_EMPRUNT = heure_fin, KM_FIN_EMPRUNT = km_fin, ID_STATION_FIN = station_fin WHERE ID_EMPRUNT=emprunt;
+
+END //
+DELIMITER ;
+
+-- ============================================================
+--    Suppressions
+-- ============================================================
+
+
+    -- ==============================
+    --    Suppression d'adhérents
+    -- ==============================
+
+
+-- Prodécure : Supprime tout les adhérents et on met à jour l'ID adhérent de tous les emprunts
+DELIMITER //
+CREATE OR REPLACE PROCEDURE delete_adherent_all()
+BEGIN
+
+SET foreign_key_checks = 0;
+UPDATE EMPRUNTS SET ID_ADHERENT=-1;
+DELETE FROM ADHERENTS; 
+SET foreign_key_checks = 1;
+
+END //
+DELIMITER ;
+
+
+-- Prodécure : Supprime un adherent spécifique et on met à jour l'ID adhérent des emprunts de l'adhérent
+DELIMITER //
+CREATE OR REPLACE PROCEDURE delete_adherent_id
+(IN id INT)
+BEGIN
+
+SET foreign_key_checks = 0;
+UPDATE EMPRUNTS SET ID_ADHERENT=-1 WHERE ID_ADHERENT=id;
+DELETE FROM ADHERENTS WHERE ID_ADHERENT=id; 
+SET foreign_key_checks = 1;
+
+END //
+DELIMITER ;
+
+
+    -- ==============================
+    --    Suppression d'emprunts
+    -- ==============================
+
+-- Procédure : Supprime tous les emprunts
+DELIMITER //
+CREATE OR REPLACE PROCEDURE delete_emprunt_all ()
+BEGIN
+
+DELETE FROM EMPRUNTS;
+
+END //
+DELIMITER ;
+
+-- Prodécure : Supprime un emprunt spécifique
+DELIMITER //
+CREATE OR REPLACE PROCEDURE delete_emprunt_id
+(IN id INT )
+BEGIN
+
+DELETE FROM EMPRUNTS
+WHERE ID_EMPRUNT=id;
+
+END //
+DELIMITER ;
