@@ -70,18 +70,17 @@ HAVING
 SELECT 
     *
 FROM 
-    (
-        SELECT
-            VELOS.*
-        FROM 
-            VELOS 
-        JOIN
-            EMPRUNTS
-        USING(ID_VELO)
-        WHERE 
-            DATE_DEBUT_EMPRUNT=date('2021-11-08')
-        GROUP BY 
-            VELOS.ID_VELO, EMPRUNTS.ID_EMPRUNT) AS TEMP
+    (SELECT
+        VELOS.*
+    FROM 
+        VELOS 
+    JOIN
+        EMPRUNTS
+    USING(ID_VELO)
+    WHERE 
+        DATE_DEBUT_EMPRUNT=date('2021-11-08')
+    GROUP BY 
+        VELOS.ID_VELO, EMPRUNTS.ID_EMPRUNT) AS TEMP
 GROUP BY    
     ID_VELO
 HAVING 
