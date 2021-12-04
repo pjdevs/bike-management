@@ -16,12 +16,8 @@ h2 {
 }
 
 /* Banner */
-#banner {
-    text-align: center;
-}
 #banner img {
-    max-width: 60vw;
-    max-height: 400px;
+	max-width: 30vw;
 }
 
 /* Footer */
