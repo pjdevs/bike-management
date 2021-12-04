@@ -21,8 +21,18 @@ CALL ajout_adherent("GAUDY", "Antoine", 'ENSEIRB 33420 Talence', date('2021-12-0
 -- Le vélo est rendu le 2021-11-15 à 8:00:00 avec un kilométrage de 6 et dans la station n°6
 CALL fin_emprunt(8, date('2021-11-15'), time('8:00:00'), 6, 6);
 
+-- Appel exemple: => Actualise l'état du vélo 2 en "Mauvais"
+CALL maj_velo_etat(2, 'MAUVAIS'); 
+
+-- Appel exemple: => Actualise la batterie du vélo 1 à 50
+CALL maj_velo_batterie(1, 50);
+
+-- Appel exemple: => Actualise l'adresse de l'adhérent 3 par la valeur "ENSEIRB" et la commune 1
+CALL maj_adherent_adresse(3, "ENSEIRB", 1);
+
+
 -- ============================================================
---    Suppressions
+--    Suppressions dans la base
 -- ============================================================
 
 -- Appel exemple: => Tous les utilisateurs sont supprimés et les emprunts mis à jour
@@ -37,3 +47,5 @@ CALL delete_emprunt_all()
 -- Appel exemple:  => L'emprunt avec l'ID 2 est supprimé
 CALL delete_emprunt_id(2);
 
+-- Appel exemple: => Supprime le vélo 4 et tous ses trajets
+CALL supprimer_velo_id(4);
