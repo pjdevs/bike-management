@@ -89,8 +89,7 @@ CALL ajout_emprunt(date('2021-11-16'), time('5:30:00'), 3, 3, 1);           -- E
 CALL fin_emprunt(9, date('2021-11-16'), time('8:45:00'), 175, 1);           -- Fin Emprunt 9
 CALL fin_emprunt(8, date('2021-11-17'), time('16:00:00'), 142, 4);          -- Fin Emprunt 8
 
-
--- Faux Emprunts (Test des triggers)
+CALL ajout_emprunt(date('2021-12-06'), time('11:25:00'), 5, 4, 9);      -- Emprunt 10 (non achevé)
 
 
 commit;

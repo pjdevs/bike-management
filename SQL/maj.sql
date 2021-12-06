@@ -24,7 +24,7 @@ CALL ajout_adherent("GAUDY", "Antoine", 'ENSEIRB 33420 Talence', date('2021-12-0
 -- Appel exemple: => Fin de l'emprunt du vélo concernant l'emprunt 10
 -- Le vélo est rendu le 2021-11-15 à 15:00:00 avec un kilométrage de 20 et dans la station n°6
 -- Pour que cette requête d'exemple fonctionne: CALL ajout_emprunt(date('2021-11-15'), time('13:30:00'), 1, 2, 3);
-CALL fin_emprunt(10, date('2021-11-15'), time('15:00:00'), 20, 6);
+CALL fin_emprunt(11, date('2021-11-15'), time('15:00:00'), 20, 6);
 
 -- Appel exemple: => Actualise l'état du vélo 2 en "Mauvais"
 CALL maj_velo_etat(2, 'MAUVAIS'); 
