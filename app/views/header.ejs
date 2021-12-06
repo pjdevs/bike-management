@@ -1,13 +1,44 @@
-<header>
-    <nav>
-        <a href="/"><img alt="Logo BBT" src="/img/bbt_min_transparent.png" width="113" height="64"></a>
-        <ul>
-            <li><a href="/">Carte des stations</a></li>
-            <li><a href="/subscribers">Adhérents</a></li>
-            <li><a href="/bikes">Rechercher des vélos</a></li>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <% if (leaflet) { %>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <% } %>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+    <script src="/js/main.js"></script>
+    <% for (const sheet of css) { %>
+    <link rel="stylesheet" href="/css/<%= sheet %>.css">
+    <% } %>
+    <% for (const script of js) { %>
+    <link rel="stylesheet" href="/js/<%= script %>.js">
+    <% } %>
+    <title>Bordeaux Bike Travel - <%= title %></title>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="nav-wrapper">
+                <a href="/" class="left brand-logo"><img alt="Logo BBT" src="/img/bbt_min_transparent.png" width="113" height="64"></a>
+                <a href="#" data-target="hidden-nav" class="right sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul class="right hide-on-med-and-down">
+                    <%- include('menu'); %>
+                </ul>
+            </div>
+        </nav>
+    
+        <ul id="hidden-nav" class="sidenav">
+            <%- include('menu'); %>
         </ul>
-    </nav>
-    <div id="banner">
-        <img alt="Logo BBT" src="/img/bbt_full_transparent.png">
-    </div>
-</header>
+    </header>
+    <main>
+        <div class="container">
+	        <div class="center-align" id="banner">
+	            <img class="reponsive-img" alt="Logo BBT" src="/img/bbt_full_transparent.png">
+	        </div>
