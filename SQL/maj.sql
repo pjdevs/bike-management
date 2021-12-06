@@ -12,7 +12,7 @@ CALL ajout_velo('Reference G2I2', "Marque ENSEIRB", date('2021-12-24'), 0, 'NEUF
 
 -- Appel exemple: => Emprunt le 2021-11-15 à 13:30:00 à la station 1 pour l'adherent 2 avec le velo 3
 -- L'emprunt n'est pas terminé donc automatiquement le vélo est en cours d'utilisation (Pas de station)
-CALL ajout_emprunt(date('2021-11-15'), time('13:30:00'), 1, 2, 3);
+CALL ajout_emprunt(date('2021-11-15'), time('13:30:00'), 2, 3);
     
 -- Appel exemple: => Création d'un adhérent dans la station 3
 CALL ajout_adherent("GAUDY", "Antoine", 'ENSEIRB 33420 Talence', date('2021-12-01'), 3);
