@@ -1,0 +1,28 @@
+<%- include('header', {title: 'Statistiques', leaflet: false, css: [], js: [], banner: false}); -%>
+
+<h1>Classement des stations par nombre de places disponibles décroissant par commune</h1>
+
+<div class="row">
+    <table class="centered highlight responsive-table">
+        <thead class="red accent-1">
+            <tr>
+                <th colspan="1">Nom commune</th>
+                <th colspan="1">Numéro station</th>
+                <th colspan="1">Adresse de la Station</th>
+                <th colspan="1">Nombre de places dispo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% stats.forEach(stat => { %>
+            <tr>
+                <td><%= stat.NOM_COMMUNE %></td>
+                <td><%= stat.ID_STATION %></td>
+                <td><%= stat.ADRESSE_STATION %></td>
+                <td><%= stat.NB_PLACES_DISPO %></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('footer'); -%>

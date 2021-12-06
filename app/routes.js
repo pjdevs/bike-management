@@ -108,12 +108,12 @@ router.get('/', (req, res) => {
     res.render('statsRankingBikes', {stats: []});
 })
 .post('/stats/rankingBikes', (req, res) => {
-    const station = req.body.station;
+    const stationid = req.body.stationid;
 
-    if (station != undefined) {
-        database.get().getRankingBikes(station)
+    if (stationid != undefined) {
+        database.get().getRankingBikes(req.body.stationid)
         .then(stats => {
-            res.render('statsRankingBikes', {stats: stats, station: station});
+            res.render('statsRankingBikes', {stats: stats, stationid: stationid});
         })
         .catch(err => {
             res.status(500).json(err);

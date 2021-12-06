@@ -1,0 +1,52 @@
+<%- include('header', {title: 'Statistiques', leaflet: false, css: [], js: [], banner: false}); -%>
+
+<h1>Classement des vélos les plus chargés par station</h1>
+
+<div class="row">
+    <form class="col s12" method="POST" action="/stats/rankingBikes">
+        <div class="row">
+            <div class="input-field col s6">
+                <input id="stationid" name="stationid" type="number">
+                <label for="nbOfTimes">Numéro de la station :</label>
+            </div>
+        </div>
+        <button type="submit" class="waves-effect waves-light btn">Rechercher</button>
+    </form>
+</div>
+
+<% if (stats.length != 0) { %>
+
+<h1>Classement des vélos les plus chargés à la station <em><%= stationid %></em></h1>
+
+<div class="row">
+    <table class="centered highlight responsive-table">
+        <thead class="red accent-1">
+            <tr>
+                <th colspan="1">Numéro Vélo</th>
+                <th colspan="1">Référence</th>
+                <th colspan="1">Marques</th>
+                <th colspan="1">Date de mise en service</th>
+                <th colspan="1">Kilométrage</th>
+                <th colspan="1">Etat</th>
+                <th colspan="1">Batterie</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% stats.forEach(stat => { %>
+                <tr>
+                    <td><%= stat.ID_VELO %></td>
+                    <td><%= stat.REFERENCE_VELO %></td>
+                    <td><%= stat.MARQUE_VELO %></td>
+                    <td><%= stat.DATE_SERVICE_VELO %></td>
+                    <td><%= stat.KM_VELO %></td>
+                    <td><%= stat.ETAT_VELO %></td>
+                    <td><%= stat.BATTERIE_VELO %></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<% } %>
+
+<%- include('footer'); -%>

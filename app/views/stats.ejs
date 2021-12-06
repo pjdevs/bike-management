@@ -1,0 +1,18 @@
+<%- include('header', {title: 'Statistiques', leaflet: false, css: [], js: [], banner: false}); -%>
+
+<h1>Statistiques</h1>
+
+<div>
+    <a href="/stats/avg/nbSubs">Moyenne du nombre d'usagers par vélo par jour</a>
+</div>
+<div>
+    <a href="/stats/avg/dates">Moyenne des distances parcourues par les vélos entre deux dates</a>
+</div>
+<div>
+    <a href="/stats/rankingStations">Classement des stations par nombre de places disponibles décroissant par commune</a>
+</div>
+<div>
+    <a href="/stats/rankingBikes">Classement des vélos les plus chargés par station</a>
+</div>
+
+<%- include('footer'); -%>

@@ -1,0 +1,44 @@
+<%- include('header', {title: 'Les adhérents', leaflet: false, css: [], js: [], banner: false}); -%>
+
+<h1>Moyenne des distances parcourues par les vélos entre deux dates</h1>
+
+<div class="row">
+    <form class="col s12" method="POST" action="/stats/avg/dates">
+        <div class="row">
+            <div class="input-field col s6">
+                <input id="day1" name="day1" type="date">
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6">
+                <input id="day2" name="day2" type="date">
+            </div>
+        </div>
+        <button type="submit" class="waves-effect waves-light btn">Rechercher</button>
+    </form>
+</div>
+
+<% if (stats.length != 0) { %>
+
+<h1>Moyenne des distances parcourues entre le <em><%= day1 %></em> et le <em><%= day2 %></em></h1>
+
+<div class="row">
+    <table class="centered highlight responsive-table">
+        <thead class="red accent-1">
+            <tr>
+                <th colspan="1">Moyenne des distances</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% stats.forEach(stat => { %>
+            <tr>
+                <td><%= stat.MOYENNE_DES_DISTANCES %></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<% } %>
+
+<%- include('footer'); -%>

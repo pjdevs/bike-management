@@ -32,7 +32,7 @@ END //
 DELIMITER ;
 
     -- ==============================
-    --    Ajout d'un trajet 
+    --    Ajout d'un emprunt 
     -- ==============================
 
 DELIMITER //

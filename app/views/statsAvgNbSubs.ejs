@@ -1,0 +1,25 @@
+<%- include('header', {title: 'Statistiques', leaflet: false, css: [], js: [], banner: false}); -%>
+
+<h1>Moyenne du nombre d'usagers par vélo par jour</h1>
+<small>Les vélos non utilisés ne sont pas affichés</small>
+
+<div class="row">
+    <table class="centered highlight responsive-table">
+        <thead class="red accent-1">
+            <tr>
+                <th colspan="1">Numéro Vélo</th>
+                <th colspan="1">Moyenne</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% avgNbSubs.forEach(avgNbSub => { %>
+            <tr>
+                <td><%= avgNbSub.ID_VELO %></td>
+                <td><%= avgNbSub.MOYENNE %></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('footer'); -%>
