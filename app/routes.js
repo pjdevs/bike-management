@@ -9,11 +9,8 @@ const router = express.Router();
 router.get('/', (req, res) => {
     res.render('index');
 })
-.get('/subscribers', (req, res) => {
-    res.render('subscribers');
-})
 .get('/bikes', (req, res) => {
-    res.render('bikes');
+    res.render('bikes', {bikes: []});
 })
 .get('/bike/:bikeID', (req, res) => {
     database.get().getBike(req.params.bikeID)
@@ -23,6 +20,28 @@ router.get('/', (req, res) => {
     .catch(err => {
         res.status(500).json(err);
     });
+})
+.get('/subscribers', (req, res) => {
+    res.render('subscribers');
+})
+.get('/subscribers/count/day', (req, res) => {
+    res.render('subscribersCountDay', {subscribers: []});
+})
+.post('/subscribers/count/day', (req, res) => {
+    const day = req.body.day;
+    const nbOfTimes = req.body.nbOfTimes;
+
+    if (nbOfTimes != undefined && day != undefined) {
+        database.get().getSubscribersBorrowedMoreThanAtDay(req.body.nbOfTimes, req.body.day)
+        .then(subscribers => {
+            res.render('subscribersCountDay', {subscribers: subscribers, day: day, nbOfTimes: nbOfTimes});
+        })
+        .catch(err => {
+            res.status(500).json(err);
+        });
+    } else {
+        res.render('subscribersCountDay', {subscribers: []});
+    }
 })
 .get('/station/:stationID', (req, res) => {
     const db = database.get();

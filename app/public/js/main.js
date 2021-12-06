@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const elems = document.querySelectorAll('.sidenav');
-    const instances = M.Sidenav.init(elems, {});
+    M.Sidenav.init(document.querySelectorAll('.sidenav'), {});
+    M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'), {});
+    M.Datepicker.init(document.querySelectorAll('.datepicker'), {});
 });
