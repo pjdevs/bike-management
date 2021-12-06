@@ -148,6 +148,6 @@ select count(*),'= 15 ?','VELOS' from VELOS
 union
 select count(*),'= 5 ?','ADHERENTS' from ADHERENTS 
 union
-select count(*),'= 1 ?','EMPRUNTS' from EMPRUNTS;
+select count(*),'= 10 ?','EMPRUNTS' from EMPRUNTS
 union
 select count(*),'= 36 ?','DISTANCIER' from DISTANCIER;
