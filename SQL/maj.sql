@@ -1,3 +1,7 @@
+--  Dans ce fichier, on regroupe les appels aux procédures qui permettent la création/mise à jour/suppression dans les tables
+--  L'implémentation de ces fonctions est dans le fichier creation_maj.sql
+
+
 
 -- ============================================================
 --    Ajouts dans la base
@@ -17,9 +21,10 @@ CALL ajout_adherent("GAUDY", "Antoine", 'ENSEIRB 33420 Talence', date('2021-12-0
 --    Mise à jour de la base
 -- ============================================================
 
--- Appel exemple: => Fin de l'emprunt du vélo concernant l'emprunt 8
--- Le vélo est rendu le 2021-11-15 à 8:00:00 avec un kilométrage de 6 et dans la station n°6
-CALL fin_emprunt(8, date('2021-11-15'), time('8:00:00'), 6, 6);
+-- Appel exemple: => Fin de l'emprunt du vélo concernant l'emprunt 10
+-- Le vélo est rendu le 2021-11-15 à 15:00:00 avec un kilométrage de 20 et dans la station n°6
+-- Pour que cette requête d'exemple fonctionne: CALL ajout_emprunt(date('2021-11-15'), time('13:30:00'), 1, 2, 3);
+CALL fin_emprunt(10, date('2021-11-15'), time('15:00:00'), 20, 6);
 
 -- Appel exemple: => Actualise l'état du vélo 2 en "Mauvais"
 CALL maj_velo_etat(2, 'MAUVAIS'); 
@@ -35,17 +40,21 @@ CALL maj_adherent_adresse(3, "ENSEIRB", 1);
 --    Suppressions dans la base
 -- ============================================================
 
+---- Choix d'implémentations:
+-- On ne peux pas supprimer un adhérent qui n'a pas encore rendu son vélo 
+-- 
+
 -- Appel exemple: => Tous les utilisateurs sont supprimés et les emprunts mis à jour
-CALL delete_adherent_all();
+CALL supprimer_adherent_tous();
 
 -- Appel exemple:  => L'utilisateur 2 est supprimé et ses emprunts sont mis à jour
-CALL delete_adherent_id(2);
+CALL supprimer_adherent_id(2);
 
 -- Appel exemple:  => Plus aucun emprunt
-CALL delete_emprunt_all()
+CALL supprimer_emprunt_tous();
 
 -- Appel exemple:  => L'emprunt avec l'ID 2 est supprimé
-CALL delete_emprunt_id(2);
+CALL supprimer_emprunt_id(2);
 
--- Appel exemple: => Supprime le vélo 4 et tous ses trajets
-CALL supprimer_velo_id(4);
+-- Appel exemple: => Supprime le vélo 1 et tous ses trajets
+CALL supprimer_velo_id(1);
