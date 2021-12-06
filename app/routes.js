@@ -64,6 +64,64 @@ router.get('/', (req, res) => {
 .get('/borrow', (req, res) => {
     res.render('borrow');
 })
+.get('/stats', (req, res) => {
+    res.render('stats', {stats: {}});
+})
+.get('/stats/avg/nbSubs', (req, res) => {
+    database.get().getAverageNumberofSubs()
+    .then(avgNbSubs => {
+        res.render('statsAvgNbSubs', {avgNbSubs: avgNbSubs});
+    })
+    .catch(err => {
+        res.status(500).json(err);
+    });
+})
+.get('/stats/avg/dates', (req, res) => {
+    res.render('statsAvgBetweenDates', {stats: []});
+})
+.post('/stats/avg/dates', (req, res) => {
+    const day1 = req.body.day1;
+    const day2 = req.body.day2;
+
+    if (day1 != undefined && day2 != undefined) {
+        database.get().getAverageDistanceBetweenDates(req.body.day1, req.body.day2)
+        .then(stats => {
+            res.render('statsAvgBetweenDates', {stats: stats, day1: day1, day2: day2});
+        })
+        .catch(err => {
+            res.status(500).json(err);
+        });
+    } else {
+        res.render('statsAvgBetweenDates', {stats: []});
+    }
+})
+.get('/stats/rankingStations', (req, res) => {
+    database.get().getRankingStations()
+    .then(stats => {
+        res.render('statsRankingStations', {stats: stats});
+    })
+    .catch(err => {
+        res.status(500).json(err);
+    });
+})
+.get('/stats/rankingBikes', (req, res) => {
+    res.render('statsRankingBikes', {stats: []});
+})
+.post('/stats/rankingBikes', (req, res) => {
+    const station = req.body.station;
+
+    if (station != undefined) {
+        database.get().getRankingBikes(station)
+        .then(stats => {
+            res.render('statsRankingBikes', {stats: stats, station: station});
+        })
+        .catch(err => {
+            res.status(500).json(err);
+        });
+    } else {
+        res.render('statsRankingBikes', {stats: []});
+    }
+})
 // API
 .get('/api/stations', (req, res) => {
     database.get().getStations()
