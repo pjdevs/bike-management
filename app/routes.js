@@ -58,6 +58,10 @@ router.get('/', (req, res) => {
         res.status(500).send(err);
     });
 })
+.get('/borrows', (req, res) => {
+    res.render('borrows', {borrows: {}});
+})
+// API
 .get('/api/stations', (req, res) => {
     database.get().getStations()
     .then(stations => {
