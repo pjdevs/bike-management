@@ -94,16 +94,60 @@ CALL ajout_emprunt(date('2021-12-06'), time('11:25:00'), 4, 9);      -- Emprunt 
 
 commit;
 
+-- Distancier
+
+insert into DISTANCIER values (1, 1, 0);
+insert into DISTANCIER values (1, 2, 5.5);
+insert into DISTANCIER values (1, 3, 1.2);
+insert into DISTANCIER values (1, 4, 2);
+insert into DISTANCIER values (1, 5, 9.4);
+insert into DISTANCIER values (1, 6, 5);
+insert into DISTANCIER values (2, 1, 5.5);
+insert into DISTANCIER values (2, 2, 0);
+insert into DISTANCIER values (2, 3, 4.9);
+insert into DISTANCIER values (2, 4, 3.7);
+insert into DISTANCIER values (2, 5, 9.3);
+insert into DISTANCIER values (2, 6, 10.3);
+insert into DISTANCIER values (3, 1, 1.2);
+insert into DISTANCIER values (3, 2, 4.9);
+insert into DISTANCIER values (3, 3, 0);
+insert into DISTANCIER values (3, 4, 1.4);
+insert into DISTANCIER values (3, 5, 10.2);
+insert into DISTANCIER values (3, 6, 5.5);
+insert into DISTANCIER values (4, 1, 2);
+insert into DISTANCIER values (4, 2, 3.7);
+insert into DISTANCIER values (4, 3, 1.4);
+insert into DISTANCIER values (4, 4, 0);
+insert into DISTANCIER values (4, 5, 10.1);
+insert into DISTANCIER values (4, 6, 7.1);
+insert into DISTANCIER values (5, 1, 9.4);
+insert into DISTANCIER values (5, 2, 9.3);
+insert into DISTANCIER values (5, 3, 10.2);
+insert into DISTANCIER values (5, 4, 10.1);
+insert into DISTANCIER values (5, 5, 0);
+insert into DISTANCIER values (5, 6, 8.4);
+insert into DISTANCIER values (6, 1, 5);
+insert into DISTANCIER values (6, 2, 10.3);
+insert into DISTANCIER values (6, 3, 5.5);
+insert into DISTANCIER values (6, 4, 7.1);
+insert into DISTANCIER values (6, 5, 8.4);
+insert into DISTANCIER values (6, 6, 0);
+
+commit;
+
+
 -- ============================================================
 --    verification des donnees
 -- ============================================================
 
-select count(*),'= 1 ?','COMMUNES' from COMMUNES
+select count(*),'= 5 ?','COMMUNES' from COMMUNES
 union
-select count(*),'= 1 ?','STATIONS' from STATIONS 
+select count(*),'= 6 ?','STATIONS' from STATIONS 
 union
-select count(*),'= 1 ?','VELOS' from VELOS
+select count(*),'= 15 ?','VELOS' from VELOS
 union
-select count(*),'= 1 ?','ADHERENTS' from ADHERENTS 
+select count(*),'= 5 ?','ADHERENTS' from ADHERENTS 
 union
 select count(*),'= 1 ?','EMPRUNTS' from EMPRUNTS;
+union
+select count(*),'= 36 ?','DISTANCIER' from DISTANCIER;

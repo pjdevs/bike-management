@@ -69,6 +69,29 @@ class Database {
             .catch(err => reject(err));
         });
     }
+
+    getSubscribersBorrowedMoreThanAtDay(numberOfTime, day) {
+        return this.query(`
+            SELECT 
+                * 
+            FROM 
+                (SELECT 
+                    ADHERENTS.*
+                FROM 
+                    ADHERENTS 
+                JOIN 
+                    EMPRUNTS 
+                USING(ID_ADHERENT) 
+                WHERE 
+                    DATE_DEBUT_EMPRUNT=date('${day}') 
+                GROUP BY 
+                ADHERENTS.ID_ADHERENT, EMPRUNTS.ID_VELO) AS TEMP 
+            GROUP BY 
+                ID_ADHERENT 
+            HAVING 
+                COUNT(*) >= ${numberOfTime};`
+        );
+    }
 }
 
 const database = new Database(config.database);
