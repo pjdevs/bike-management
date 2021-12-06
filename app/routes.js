@@ -61,6 +61,9 @@ router.get('/', (req, res) => {
 .get('/borrows', (req, res) => {
     res.render('borrows', {borrows: {}});
 })
+.get('/borrow', (req, res) => {
+    res.render('borrow');
+})
 // API
 .get('/api/stations', (req, res) => {
     database.get().getStations()

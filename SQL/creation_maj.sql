@@ -40,18 +40,19 @@ CREATE OR REPLACE PROCEDURE ajout_emprunt
 (
     IN date_debut DATE,
     IN heure_debut TIME, 
-    IN station_debut INT,
     IN adherent INT,
     IN velo INT
 )
 BEGIN
     DECLARE km INT; 
+    DECLARE station_debut INT; 
     DECLARE id INT; 
 
     SELECT MAX(ID_EMPRUNT) from EMPRUNTS INTO id;
     SET id = id + 1;
 
     SELECT KM_VELO from VELOS WHERE ID_VELO=velo INTO km;
+    SELECT ID_STATION from VELOS WHERE ID_VELO=velo INTO station_debut; 
 
     UPDATE VELOS SET ID_STATION = NULL WHERE ID_VELO=velo;
     INSERT INTO EMPRUNTS VALUES (id, date_debut, heure_debut, km, station_debut, NULL, NULL, NULL, NULL, adherent, velo);

@@ -68,28 +68,28 @@ commit;
 
 -- EMPRUNTS
 
-CALL ajout_emprunt(date('2021-11-08'), time('08:00:00'), 1, 1, 1);          -- Emprunt 1 => Adhérent 1 dans Station 1 Vélo 1
-CALL ajout_emprunt(date('2021-11-08'), time('13:30:00'), 2, 2, 2);          -- Emprunt 2
+CALL ajout_emprunt(date('2021-11-08'), time('08:00:00'), 1, 1);          -- Emprunt 1 => Adhérent 1 dans Station 1 Vélo 1
+CALL ajout_emprunt(date('2021-11-08'), time('13:30:00'), 2, 2);          -- Emprunt 2
 CALL fin_emprunt(2, date('2021-11-08'), time('14:00:00'), 55, 5);           -- Fin Emprunt 2
-CALL ajout_emprunt(date('2021-11-08'), time('16:00:00'), 5, 4, 2);          -- Emprunt 3 => Adhérent 4 dans Station 5 Vélo 2
+CALL ajout_emprunt(date('2021-11-08'), time('16:00:00'), 4, 2);          -- Emprunt 3 => Adhérent 4 dans Station 5 Vélo 2
 CALL fin_emprunt(3, date('2021-11-08'), time('18:00:00'), 75, 4);           -- Fin Emprunt 3
 CALL fin_emprunt(1, date('2021-11-08'), time('20:00:00'), 100, 1);          -- Fin Emprunt 1
-CALL ajout_emprunt(date('2021-11-08'), time('21:00:00'), 1, 3, 1);          -- Emprunt 4
-CALL ajout_emprunt(date('2021-11-08'), time('21:30:00'), 6, 1, 14);         -- Emprunt 5
+CALL ajout_emprunt(date('2021-11-08'), time('21:00:00'), 3, 1);          -- Emprunt 4
+CALL ajout_emprunt(date('2021-11-08'), time('21:30:00'), 1, 14);         -- Emprunt 5
 CALL fin_emprunt(5, date('2021-11-08'), time('23:00:00'), 100, 1);          -- Fin Emprunt 5
 CALL fin_emprunt(4, date('2021-11-09'), time('08:00:00'), 125, 3);          -- Fin Emprunt 4
 
-CALL ajout_emprunt(date('2021-11-13'), time('10:00:00'), 6, 4, 15);         -- Emprunt 6
+CALL ajout_emprunt(date('2021-11-13'), time('10:00:00'), 4, 15);         -- Emprunt 6
 CALL fin_emprunt(6, date('2021-11-13'), time('11:00:00'), 55, 6);           -- Fin Emprunt 6  (20 km parcouru)
-CALL ajout_emprunt(date('2021-11-13'), time('14:00:00'), 6, 4, 15);         -- Emprunt 7
+CALL ajout_emprunt(date('2021-11-13'), time('14:00:00'), 4, 15);         -- Emprunt 7
 CALL fin_emprunt(7, date('2021-11-13'), time('16:00:00'), 85, 6);           -- Fin Emprunt 7  (30km parcouru)
 
-CALL ajout_emprunt(date('2021-11-15'), time('7:25:00'), 1,  2, 14);         -- Emprunt 8
-CALL ajout_emprunt(date('2021-11-16'), time('5:30:00'), 3, 3, 1);           -- Emprunt 9
+CALL ajout_emprunt(date('2021-11-15'), time('7:25:00'),  2, 14);         -- Emprunt 8
+CALL ajout_emprunt(date('2021-11-16'), time('5:30:00'), 3, 1);           -- Emprunt 9
 CALL fin_emprunt(9, date('2021-11-16'), time('8:45:00'), 175, 1);           -- Fin Emprunt 9
 CALL fin_emprunt(8, date('2021-11-17'), time('16:00:00'), 142, 4);          -- Fin Emprunt 8
 
-CALL ajout_emprunt(date('2021-12-06'), time('11:25:00'), 5, 4, 9);      -- Emprunt 10 (non achevé)
+CALL ajout_emprunt(date('2021-12-06'), time('11:25:00'), 4, 9);      -- Emprunt 10 (non achevé)
 
 
 commit;
