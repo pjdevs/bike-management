@@ -59,10 +59,30 @@ router.get('/', (req, res) => {
     });
 })
 .get('/borrows', (req, res) => {
-    res.render('borrows', {borrows: {}});
+    res.render('borrows', {borrows: []});
 })
 .get('/borrow', (req, res) => {
-    res.render('borrow');
+    const db = database.get();
+
+    db.getSubscribersCanBorrow()
+    .then(subscribers => {
+        db.getStoredBikes()
+        .then(bikes => {
+            res.render('borrow',  {subscribers: subscribers, bikes: bikes});
+        });
+    })
+    .catch(err => {
+        res.status(500).send(err);
+    });
+})
+.post('/borrow', (req, res) => {
+    database.get().borrowBike(req.body.bikeID, req.body.subscriberID)
+    .then(res => {
+        res.redirect('/borrows');
+    })
+    .catch(err => {
+        res.status(500).json(err);
+    })
 })
 .get('/stats', (req, res) => {
     res.render('stats', {stats: {}});

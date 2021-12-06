@@ -39,6 +39,27 @@ class Database {
     }
 
     /**
+     * Custom query to get the list of subscribers not on bike.
+     * @returns A promise for the request.
+     */
+    getSubscribersCanBorrow() {
+        return this.query(`select ADHERENTS.*
+                           from ADHERENTS natural join DERNIER_EMPRUNT_ADHERENT
+                           where ID_EMPRUNT in (
+                               select ID_EMPRUNT from EMPRUNTS
+                               where ID_STATION_FIN is not null
+                           );`);
+    }
+
+    /**
+     * Custom query to get all stored bikes.
+     * @returns A promise for the request.
+     */
+    getStoredBikes() {
+        return this.query('select * from VELOS where ID_STATION is not null;');
+    }
+
+    /**
      * Custom query to get the list of bikes in station.
      * @returns A promise for the request.
      */
@@ -176,6 +197,12 @@ class Database {
                 BATTERIE_VELO DESC
             ;`
         );
+    }
+
+    borrowBike(bikeID, subscriberID) {
+        return this.query(`CALL ajout_emprunt('${date.getFullYear()}-${date.getUTCMonth()}-${date.getUTCDay()}',
+                                        '${date.getUTCHours()}:${date.getUTCMinutes()}:${date.getUTCSeconds()}',
+                                        ${subscriberID}, ${bikeID})`);
     }
 }
 

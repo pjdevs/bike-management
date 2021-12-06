@@ -1,7 +1,75 @@
-<%- include('header', {title: 'Emprunter', leaflet: true, css: [], js: [], banner: false}); -%>
+<%- include('header', {title: 'Emprunter', leaflet: false, css: [], js: [], banner: false}); -%>
 
-<h1>Choisissez où emprunter un vélo :</h1>
-<div id="map"></div>
-<script src="/js/stationsMap.js"></script>
+<div class="col s12">
+    <div class="row">
+        <form class="col s12" method="POST" action="/borrow/">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="bikeID" name="bikeID" type="number" value="0" readonly>
+                    <label for="bikeID">Vélo :</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="subscriberID" name="subscriberID" type="number" value="0" readonly>
+                    <label for="subscriberID">Adhérent :</label>
+                </div>
+            </div>
+            <div class="row">
+                <button type="submit" class="waves-effect waves-light btn">Emprunter</button>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col s12 m6">
+            <h1>Choisissez un vélo :</h1>
+            <table class="centered highlight responsive-table">
+                <thead class="red accent-1">
+                        <tr>
+                            <th colspan="1">Marque</th>
+                            <th colspan="1">Référence</th>
+                            <th colspan="1">Date de mise en service</th>
+                            <th colspan="1">Kilométrage</th>
+                            <th colspan="1">Etat</th>
+                            <th colspan="1">Batterie</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% bikes.forEach(bike => { %>
+                        <tr class="bike" onclick="document.getElementById('bikeID').value = '<%= bike.ID_VELO %>'">
+                            <td><%= bike.MARQUE_VELO %></td>
+                            <td><%= bike.REFERENCE_VELO %></td>
+                            <td><%= new Date(bike.DATE_SERVICE_VELO).toLocaleDateString() %></td>
+                            <td><%= bike.KM_VELO %></td>
+                            <td><%= bike.ETAT_VELO %></td>
+                            <td><%= bike.BATTERIE_VELO %></td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+            </table>
+        </div>
+        <div class="col s12 m6">
+            <h1>Choisissez un adhérent :</h1>
+            <table class="centered highlight responsive-table">
+                <thead class="red accent-1">
+                    <tr>
+                        <th colspan="1">Nom</th>
+                        <th colspan="1">Prénom</th>
+                        <th colspan="1">Adresse</th>
+                        <th colspan="1">Date d'adhésion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% subscribers.forEach(subscriber => { %>
+                    <tr onclick="document.getElementById('subscriberID').value = '<%= subscriber.ID_ADHERENT %>'">
+                        <td><%= subscriber.NOM_ADHERENT %></td>
+                        <td><%= subscriber.PRENOM_ADHERENT %></td>
+                        <td><%= subscriber.ADRESSE_ADHERENT %></td>
+                        <td><%= new Date(subscriber.DATE_ADHESION_ADHERENT).toLocaleDateString() %></td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 <%- include('footer'); -%>
