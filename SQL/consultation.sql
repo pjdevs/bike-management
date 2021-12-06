@@ -4,6 +4,7 @@
 SELECT * FROM VELOS;
 SELECT * FROM STATIONS;
 SELECT * FROM ADHERENTS;
+SELECT * FROM EMPRUNTS; 
 
 
 -- ========================================================================================================================
