@@ -11,7 +11,9 @@
                 <p>depuis <em><%= borrow.ADRESSE_STATION %></em> <br>
                     par <em><%= borrow.NOM_COMPLET_ADHERENT %></em>
                 </p>
-                <a href="/return/<%= borrow.ID_EMPRUNT %>" class="secondary-content"><i class="material-icons">send</i></a>
+                <a href="/return/<%= borrow.ID_EMPRUNT %>" class="secondary-content tooltipped" data-position="right" data-tooltip="Rendre ce vélo">
+                    <i class="material-icons">send</i>
+                </a>
             </li>
             <% }); %>
         </ul>

@@ -124,6 +124,16 @@ router.get('/', (req, res) => {
     .catch(errorHandler(res));
 
 })
+.post('/return/:borrowID', (req, res) => {
+    const db = database.get();
+
+    db.returnBike(req.params.borrowID)
+    .then(_ => {
+        res.redirect('/borrows/list');
+    })
+    .catch(errorHandler(res));
+
+})
 .get('/stats', (req, res) => {
     res.render('stats', {stats: {}});
 })

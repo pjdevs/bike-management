@@ -225,8 +225,16 @@ class Database {
     borrowBike(bikeID, subscriberID) {
         const date = new Date();
         return this.query(`call ajout_emprunt('${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}',
-                                        '${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}',
-                                        ${subscriberID}, ${bikeID})`);
+                                              '${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}',
+                                               ${subscriberID}, ${bikeID})`);
+    }
+
+    returnBike(borrowID, endKm, endStationID) {
+        const date = new Date();
+        return this.query(`call fin_emprunt(${borrowID},
+                                           '${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}',
+                                           '${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}',
+                                            ${endKm}, ${endStationID})`);
     }
 
     getBorrow(borrowID) {
