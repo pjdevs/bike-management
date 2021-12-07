@@ -37,7 +37,7 @@
                     <td><%= stat.ID_VELO %></td>
                     <td><%= stat.REFERENCE_VELO %></td>
                     <td><%= stat.MARQUE_VELO %></td>
-                    <td><%= stat.DATE_SERVICE_VELO %></td>
+                    <td><%= new Date(stat.DATE_SERVICE_VELO).toLocaleDateString() %></td>
                     <td><%= stat.KM_VELO %></td>
                     <td><%= stat.ETAT_VELO %></td>
                     <td><%= stat.BATTERIE_VELO %></td>

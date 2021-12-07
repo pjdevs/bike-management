@@ -43,21 +43,21 @@ router.get('/', (req, res) => {
 .get('/subscribers', (req, res) => {
     res.render('subscribers');
 })
-.get('/subscribers/count/day', (req, res) => {
-    res.render('subscribersCountDay', {subscribers: []});
+.get('/stats/subsCountDay', (req, res) => {
+    res.render('statsSubscribersCountDay', {subscribers: []});
 })
-.post('/subscribers/count/day', (req, res) => {
+.post('/stats/subsCountDay', (req, res) => {
     const day = req.body.day;
     const nbOfTimes = req.body.nbOfTimes;
 
     if (nbOfTimes != undefined && day != undefined) {
         database.get().getSubscribersBorrowedMoreThanAtDay(req.body.nbOfTimes, req.body.day)
         .then(subscribers => {
-            res.render('subscribersCountDay', {subscribers: subscribers, day: day, nbOfTimes: nbOfTimes});
+            res.render('statsSubscribersCountDay', {subscribers: subscribers, day: day, nbOfTimes: nbOfTimes});
         })
         .catch(errorHandler(res));
     } else {
-        res.render('subscribersCountDay', {subscribers: []});
+        res.render('statsSubscribersCountDay', {subscribers: []});
     }
 })
 .get('/subscribers/allSubs', (req, res) => {

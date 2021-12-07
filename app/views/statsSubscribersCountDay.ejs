@@ -1,9 +1,9 @@
-<%- include('header', {title: 'Les adhérents', leaflet: false, css: [], js: [], banner: false}); -%>
+<%- include('header', {title: 'Statistiques', leaflet: false, css: [], js: [], banner: false}); -%>
 
 <h1>Rechercher les adhérents qui ont utilisés au moins <em>n</em> fois un vélo le jour <em>j</em></h1>
 
 <div class="row">
-    <form class="col s12" method="POST" action="/subscribers/count/day/">
+    <form class="col s12" method="POST" action="/stats/subsCountDay">
         <div class="row">
             <div class="input-field col s6">
                 <input id="nbOfTimes" name="nbOfTimes" type="number">
