@@ -97,7 +97,7 @@ router.get('/', (req, res) => {
         .then(bike => {
             db.getStationListWhereCanReturn()
             .then(stations => {
-                res.render('returnBike', {borrow: borrow, bike: bike, stations: stations});
+                res.render('return', {borrow: borrow, bike: bike, stations: stations});
             })
             .catch(errorHandler(res));
         })

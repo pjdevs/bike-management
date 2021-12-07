@@ -2,9 +2,9 @@
 
 <h1>Rendre le <%= bike.MARQUE_VELO %> <%= bike.REFERENCE_VELO %></h1>
 <div class="row">
-    <form class="col s12" method="POST" action="/return/<%= borrow.ID_EMPRUNT">
+    <form class="col s12" method="POST" action="/return/<%= borrow.ID_EMPRUNT %>">
         <p class="range-field col s6">
-            <input type="range" id="endKm" name="endKm" min="<%= borrow.KM_DEBUT_EMPRUNT %>+1" max="2*<%= borrow.KM_DEBUT_EMPRUNT %>" />
+            <input type="range" id="endKm" name="endKm" min="<%= borrow.KM_DEBUT_EMPRUNT %>" max="500" />
             <label for="endKm">KM de fin :</label>
         </p>
         <div class="row">
@@ -25,7 +25,7 @@
             <thead class="red accent-1">
                     <tr>
                         <th colspan="1">Adresse</th>
-                        <th colspan="1">Nombre de vélos</th>
+                        <th colspan="1">Nombre de places disponnibles</th>
                     </tr>
                 </thead>
                 <tbody>
