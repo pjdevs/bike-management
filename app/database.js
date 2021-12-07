@@ -147,14 +147,14 @@ class Database {
     getAverageDistanceBetweenDates(day1, day2) {
         return this.query(`
             SELECT 
-                SUM(DISTANCE) / COUNT(DISTINCT ID_VELO) AS MOYENNE_DES_DISTANCES
+                COALESCE(SUM(DISTANCE) / COUNT(DISTINCT ID_VELO), 0) AS MOYENNE_DES_DISTANCES
             FROM
                 (SELECT
                         EMPRUNTS.ID_VELO, KM_FIN_EMPRUNT - KM_DEBUT_EMPRUNT AS DISTANCE
                     FROM
                         EMPRUNTS
                     WHERE 
-                        ID_STATION_FIN IS NOT NULL AND EMPRUNTS.DATE_DEBUT_EMPRUNT >= DATE("2021-11-07") AND EMPRUNTS.DATE_FIN_EMPRUNT <= DATE("2021-11-15")) AS DISTANCES
+                        ID_STATION_FIN IS NOT NULL AND EMPRUNTS.DATE_DEBUT_EMPRUNT >= DATE('${day1}') AND EMPRUNTS.DATE_FIN_EMPRUNT <= DATE('${day2}')) AS DISTANCES
             ;`
         );
     }
@@ -208,6 +208,18 @@ class Database {
                 BATTERIE_VELO DESC
             ;`
         );
+    }
+
+    getAllBikes() {
+        return this.query(`
+            SELECT REFERENCE_VELO, MARQUE_VELO, ETAT_VELO, BATTERIE_VELO, COALESCE(ID_STATION, "En cours d'utilisation") AS ID_STATION FROM VELOS;`
+        );
+    }
+
+    getAvailableBikes() {
+        return this.query(`
+            SELECT REFERENCE_VELO, MARQUE_VELO, ETAT_VELO, BATTERIE_VELO, ID_STATION FROM VELOS WHERE ID_STATION IS NOT NULL;
+        `);
     }
 
     borrowBike(bikeID, subscriberID) {
