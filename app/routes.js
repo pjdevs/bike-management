@@ -77,12 +77,22 @@ router.get('/', (req, res) => {
 })
 .post('/borrow', (req, res) => {
     database.get().borrowBike(req.body.bikeID, req.body.subscriberID)
-    .then(res => {
-        res.redirect('/borrows');
+    .then(_ => {
+        res.redirect('/borrows/list');
     })
     .catch(err => {
         res.status(500).json(err);
     })
+})
+.get('/borrows/list', (req, res) => {
+    database.get().getCurrentBorrowList()
+    .then(borrows => {
+        res.render('borrowsList', {borrows: borrows});
+    })
+    .catch(err => {
+        res.status(500).json(err);
+    })
+
 })
 .get('/stats', (req, res) => {
     res.render('stats', {stats: {}});

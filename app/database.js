@@ -56,7 +56,7 @@ class Database {
      * @returns A promise for the request.
      */
     getStoredBikes() {
-        return this.query('select * from VELOS where ID_STATION is not null;');
+        return this.query('select VELOS.*, ADRESSE_STATION from VELOS natural join STATIONS order by ID_STATION;');
     }
 
     /**
@@ -200,9 +200,17 @@ class Database {
     }
 
     borrowBike(bikeID, subscriberID) {
-        return this.query(`CALL ajout_emprunt('${date.getFullYear()}-${date.getUTCMonth()}-${date.getUTCDay()}',
-                                        '${date.getUTCHours()}:${date.getUTCMinutes()}:${date.getUTCSeconds()}',
+        const date = new Date();
+        return this.query(`call ajout_emprunt('${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}',
+                                        '${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}',
                                         ${subscriberID}, ${bikeID})`);
+    }
+
+    getCurrentBorrowList() {
+        return this.query(`select ID_EMPRUNT, ID_STATION_DEBUT, ID_VELO, ADRESSE_STATION, concat(PRENOM_ADHERENT, ' ', NOM_ADHERENT) NOM_COMPLET_ADHERENT, concat(MARQUE_VELO, ' ', REFERENCE_VELO) NOM_VELO
+                           from EMPRUNTS natural join VELOS natural join ADHERENTS inner join STATIONS on EMPRUNTS.ID_STATION_DEBUT = STATIONS.ID_STATION
+                           where ID_STATION_FIN is null
+                           order by ID_STATION_DEBUT`);
     }
 }
 
