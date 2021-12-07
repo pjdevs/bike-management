@@ -63,7 +63,7 @@ class Database {
      * Custom query to get the list of bikes in station.
      * @returns A promise for the request.
      */
-     getBikes(stationID) {
+    getBikes(stationID) {
         return this.query(`select * from VELOS where ID_STATION = ${stationID};`);
     }
 
@@ -71,13 +71,13 @@ class Database {
      * Custom query to get a bike by ID.
      * @returns A promise for the request.
      */
-         getBike(bikeID) {
-            return new Promise((resolve, reject) => {
-                this.query(`select * from VELOS where ID_VELO = ${bikeID};`)
-                .then(rows => resolve(rows[0]))
-                .catch(err => reject(err));
-            });
-        }
+    getBike(bikeID) {
+        return new Promise((resolve, reject) => {
+            this.query(`select * from VELOS where ID_VELO = ${bikeID};`)
+            .then(rows => resolve(rows[0]))
+            .catch(err => reject(err));
+        });
+    }
 
     /**
      * Custom query to get a station by id.
@@ -185,6 +185,17 @@ class Database {
         );
     }
 
+    getStationListWhereCanReturn() {
+        return this.query(`
+            SELECT
+                ID_STATION, ADRESSE_STATION, concat(NB_PLACES_DISPO, ' / ', NB_BORNES_STATION) RATIO
+            FROM
+                STATIONS natural join NB_PLACES_DISPO_STATION
+            WHERE NB_PLACES_DISPO > 0
+            ORDER BY NB_PLACES_DISPO DESC;
+        `);
+    }
+
     getRankingBikes(stationId) {
         return this.query(`
             SELECT 
@@ -204,6 +215,14 @@ class Database {
         return this.query(`call ajout_emprunt('${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}',
                                         '${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}',
                                         ${subscriberID}, ${bikeID})`);
+    }
+
+    getBorrow(borrowID) {
+        return new Promise((resolve, reject) => {
+            this.query(`select * from EMPRUNTS where ID_EMPRUNT = ${borrowID};`)
+            .then(rows => resolve(rows[0]))
+            .catch(err => reject(err));
+        });
     }
 
     getCurrentBorrowList() {

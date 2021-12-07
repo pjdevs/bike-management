@@ -5,6 +5,10 @@ const database = require('./database');
 // Router
 const router = express.Router();
 
+function errorHandler(res) {
+    err => res.status(500).json(err);
+}
+
 // Define the routes
 router.get('/', (req, res) => {
     res.render('index');
@@ -17,9 +21,7 @@ router.get('/', (req, res) => {
     .then(bike => {
         res.render('bike', {bike: bike});
     })
-    .catch(err => {
-        res.status(500).json(err);
-    });
+    .catch(errorHandler(res));
 })
 .get('/subscribers', (req, res) => {
     res.render('subscribers');
@@ -36,9 +38,7 @@ router.get('/', (req, res) => {
         .then(subscribers => {
             res.render('subscribersCountDay', {subscribers: subscribers, day: day, nbOfTimes: nbOfTimes});
         })
-        .catch(err => {
-            res.status(500).json(err);
-        });
+        .catch(errorHandler(res));
     } else {
         res.render('subscribersCountDay', {subscribers: []});
     }
@@ -52,11 +52,10 @@ router.get('/', (req, res) => {
         db.getBikes(stationID)
         .then(bikes => {
             res.render('station', {station: station, bikes: bikes});
-        });
+        })
+        .catch(errorHandler(res));
     })
-    .catch(err => {
-        res.status(500).send(err);
-    });
+    .catch(errorHandler(res));
 })
 .get('/borrows', (req, res) => {
     res.render('borrows', {borrows: []});
@@ -69,29 +68,42 @@ router.get('/', (req, res) => {
         db.getStoredBikes()
         .then(bikes => {
             res.render('borrow',  {subscribers: subscribers, bikes: bikes});
-        });
+        })
+        .catch(errorHandler(res));
     })
-    .catch(err => {
-        res.status(500).send(err);
-    });
+    .catch(errorHandler(res));
 })
 .post('/borrow', (req, res) => {
     database.get().borrowBike(req.body.bikeID, req.body.subscriberID)
     .then(_ => {
         res.redirect('/borrows/list');
     })
-    .catch(err => {
-        res.status(500).json(err);
-    })
+    .catch(errorHandler(res));
 })
 .get('/borrows/list', (req, res) => {
     database.get().getCurrentBorrowList()
     .then(borrows => {
         res.render('borrowsList', {borrows: borrows});
     })
-    .catch(err => {
-        res.status(500).json(err);
+    .catch(errorHandler(res));
+
+})
+.get('/return/:borrowID', (req, res) => {
+    const db = database.get();
+
+    db.getBorrow(req.params.borrowID)
+    .then(borrow => {
+        db.getBike(borrow.ID_VELO)
+        .then(bike => {
+            db.getStationListWhereCanReturn()
+            .then(stations => {
+                res.render('returnBike', {borrow: borrow, bike: bike, stations: stations});
+            })
+            .catch(errorHandler(res));
+        })
+        .catch(errorHandler(res));
     })
+    .catch(errorHandler(res));
 
 })
 .get('/stats', (req, res) => {
@@ -102,9 +114,7 @@ router.get('/', (req, res) => {
     .then(avgNbSubs => {
         res.render('statsAvgNbSubs', {avgNbSubs: avgNbSubs});
     })
-    .catch(err => {
-        res.status(500).json(err);
-    });
+    .catch(errorHandler(res));
 })
 .get('/stats/avg/dates', (req, res) => {
     res.render('statsAvgBetweenDates', {stats: []});
@@ -118,9 +128,7 @@ router.get('/', (req, res) => {
         .then(stats => {
             res.render('statsAvgBetweenDates', {stats: stats, day1: day1, day2: day2});
         })
-        .catch(err => {
-            res.status(500).json(err);
-        });
+        .catch(errorHandler(res));
     } else {
         res.render('statsAvgBetweenDates', {stats: []});
     }
@@ -130,9 +138,7 @@ router.get('/', (req, res) => {
     .then(stats => {
         res.render('statsRankingStations', {stats: stats});
     })
-    .catch(err => {
-        res.status(500).json(err);
-    });
+    .catch(errorHandler(res));
 })
 .get('/stats/rankingBikes', (req, res) => {
     res.render('statsRankingBikes', {stats: []});
@@ -145,9 +151,7 @@ router.get('/', (req, res) => {
         .then(stats => {
             res.render('statsRankingBikes', {stats: stats, stationid: stationid});
         })
-        .catch(err => {
-            res.status(500).json(err);
-        });
+        .catch(errorHandler(res));
     } else {
         res.render('statsRankingBikes', {stats: []});
     }
@@ -158,9 +162,7 @@ router.get('/', (req, res) => {
     .then(stations => {
         res.send(stations);
     })
-    .catch(err => {
-        res.status(500).json(err);
-    });
+    .catch(errorHandler(res));
 })
 .use((req, res) => {
     res.redirect('/');
