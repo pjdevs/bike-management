@@ -12,6 +12,24 @@ router.get('/', (req, res) => {
 .get('/bikes', (req, res) => {
     res.render('bikes', {bikes: []});
 })
+.get('/bikes/allBikes', (req, res) => {
+    database.get().getAllBikes()
+    .then(bikes => {
+        res.render('bikesAllBikes', {bikes: bikes});
+    })
+    .catch(err => {
+        res.status(500).json(err);
+    });
+})
+.get('/bikes/availableBikes', (req, res) => {
+    database.get().getAvailableBikes()
+    .then(bikes => {
+        res.render('bikesAvailableBikes', {bikes: bikes});
+    })
+    .catch(err => {
+        res.status(500).json(err);
+    });
+})
 .get('/bike/:bikeID', (req, res) => {
     database.get().getBike(req.params.bikeID)
     .then(bike => {

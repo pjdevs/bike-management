@@ -1,0 +1,32 @@
+<%- include('header', {title: 'Vélos', leaflet: false, css: [], js: [], banner: false}); -%>
+
+<div class="row">
+    <h1>L'ensemble de nos vélos disponibles autour de vous</h1>
+    <a class="waves-effect waves-light btn" href="/bikes/allBikes">Filtrer tous les vélos</a>
+</div>
+<div class="row">
+    <table class="centered highlight responsive-table">
+        <thead class="red accent-1">
+            <tr>
+                <th colspan="1">Référence</th>
+                <th colspan="1">Marques</th>
+                <th colspan="1">Etat</th>
+                <th colspan="1">Batterie</th>
+                <th colspan='1'>Numéro de la station</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% bikes.forEach(bike => { %>
+                <tr>
+                    <td><%= bike.REFERENCE_VELO %></td>
+                    <td><%= bike.MARQUE_VELO %></td>
+                    <td><%= bike.ETAT_VELO %></td>
+                    <td><%= bike.BATTERIE_VELO %></td>
+                    <td><%= bike.ID_STATION %></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('footer'); -%>
