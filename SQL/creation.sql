@@ -120,9 +120,7 @@ AS
             ID_ADHERENT) AS EMPRUNTS_HEURES_MAX
 ;
 
--- ========================================================================================================================
---     Vue du nombre de places disponnibles par station.
--- ========================================================================================================================
+-- Vue du nombre de places disponnibles par station.
 CREATE OR REPLACE VIEW NB_PLACES_DISPO_STATION
 AS
     SELECT 

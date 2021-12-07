@@ -188,7 +188,7 @@ class Database {
     getStationListWhereCanReturn() {
         return this.query(`
             SELECT
-                ID_STATION, ADRESSE_STATION, concat(NB_PLACES_DISPO, ' / ', NB_BORNES_STATION) RATIO
+                ID_STATION, ADRESSE_STATION, concat(NB_PLACES_DISPO, ' / ', NOMBRE_BORNES_STATION) RATIO
             FROM
                 STATIONS natural join NB_PLACES_DISPO_STATION
             WHERE NB_PLACES_DISPO > 0
