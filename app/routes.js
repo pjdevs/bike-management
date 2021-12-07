@@ -83,9 +83,6 @@ router.get('/', (req, res) => {
     })
     .catch(errorHandler(res));
 })
-.get('/borrows', (req, res) => {
-    res.render('borrows', {borrows: []});
-})
 .get('/borrow', (req, res) => {
     const db = database.get();
 
@@ -110,6 +107,13 @@ router.get('/', (req, res) => {
     database.get().getAllBorrows()
     .then(borrows => {
         res.render('borrowsAllBorrows', {borrows: borrows});
+    })
+    .catch(errorHandler(res));
+})
+.get('/borrows/endedBorrows', (req, res) => {
+    database.get().getEndedBorrows()
+    .then(borrows => {
+        res.render('borrowsEndedBorrows', {borrows: borrows});
     })
     .catch(errorHandler(res));
 })

@@ -252,7 +252,7 @@ class Database {
     }
 
     getCurrentBorrowList() {
-        return this.query(`select ID_EMPRUNT, ID_STATION_DEBUT, ID_VELO, ADRESSE_STATION, concat(PRENOM_ADHERENT, ' ', NOM_ADHERENT) NOM_COMPLET_ADHERENT, concat(MARQUE_VELO, ' ', REFERENCE_VELO) NOM_VELO
+        return this.query(`select EMPRUNTS.*, concat(PRENOM_ADHERENT, ' ', NOM_ADHERENT) NOM_COMPLET_ADHERENT, concat(MARQUE_VELO, ' ', REFERENCE_VELO) NOM_VELO
                            from EMPRUNTS natural join VELOS natural join ADHERENTS inner join STATIONS on EMPRUNTS.ID_STATION_DEBUT = STATIONS.ID_STATION
                            where ID_STATION_FIN is null
                            order by ID_STATION_DEBUT`);
@@ -260,8 +260,39 @@ class Database {
 
     getAllBorrows() {
         return this.query(`
-            SELECT * FROM EMPRUNTS WHERE ID_STATION_FIN IS NOT NULL;
+        select 
+            ID_EMPRUNT, ID_ADHERENT, ID_VELO, DATE_DEBUT_EMPRUNT, COALESCE(DATE_FIN_EMPRUNT, "Emprunt en cours") DATE_FIN_EMPRUNT, HEURE_DEBUT_EMPRUNT, COALESCE(HEURE_FIN_EMPRUNT, "Emprunt en cours") HEURE_FIN_EMPRUNT, COALESCE(KM_FIN_EMPRUNT - KM_DEBUT_EMPRUNT, "Emprunt en cours") AS KM_PARCOURUS, concat(PRENOM_ADHERENT, ' ', NOM_ADHERENT) NOM_COMPLET_ADHERENT, concat(MARQUE_VELO, ' ', REFERENCE_VELO) NOM_VEL, S1.ADRESSE_STATION ADDR1, COALESCE(S2.ADRESSE_STATION, "Emprunt en cours") ADDR2
+        from 
+            EMPRUNTS 
+        natural join 
+            VELOS 
+        natural join 
+            ADHERENTS 
+        inner join 
+            STATIONS S1 on EMPRUNTS.ID_STATION_DEBUT = S1.ID_STATION
+        left outer join
+            STATIONS S2 on EMPRUNTS.ID_STATION_FIN = S2.ID_STATION
+        order by 
+            DATE_FIN_EMPRUNT DESC, HEURE_FIN_EMPRUNT DESC;
         `);
+    }
+
+    getEndedBorrows() {
+        return this.query(
+        `select 
+            ID_EMPRUNT, ID_ADHERENT, ID_VELO, DATE_DEBUT_EMPRUNT, COALESCE(DATE_FIN_EMPRUNT, "Emprunt en cours") DATE_FIN_EMPRUNT, HEURE_DEBUT_EMPRUNT, COALESCE(HEURE_FIN_EMPRUNT, "Emprunt en cours") HEURE_FIN_EMPRUNT, COALESCE(KM_FIN_EMPRUNT - KM_DEBUT_EMPRUNT, "Emprunt en cours") AS KM_PARCOURUS, concat(PRENOM_ADHERENT, ' ', NOM_ADHERENT) NOM_COMPLET_ADHERENT, concat(MARQUE_VELO, ' ', REFERENCE_VELO) NOM_VEL, S1.ADRESSE_STATION ADDR1, COALESCE(S2.ADRESSE_STATION, "Emprunt en cours") ADDR2
+        from 
+            EMPRUNTS 
+        natural join 
+            VELOS 
+        natural join 
+            ADHERENTS 
+        inner join 
+            STATIONS S1 on EMPRUNTS.ID_STATION_DEBUT = S1.ID_STATION
+        inner join
+            STATIONS S2 on EMPRUNTS.ID_STATION_FIN = S2.ID_STATION
+        order by 
+            DATE_FIN_EMPRUNT DESC, HEURE_FIN_EMPRUNT DESC;`);
     }
 
     getAllSubs() {

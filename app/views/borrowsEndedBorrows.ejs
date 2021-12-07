@@ -2,13 +2,13 @@
 
 <div class="row">
     <div class="col s12">
-        <h1>Tous les emprunts depuis notre création</h1>
+        <h1>Les emprunts réalisés et terminés depuis notre création</h1>
     </div>
 </div>
 
 <div class="row  valign-wrapper">
     <div class="col s4">
-        <a class="waves-effect waves-light btn" href="/borrows/endedBorrows">Filtrer les emprunts terminés</a>
+        <a class="waves-effect waves-light btn" href="/borrows/allBorrows">Filtrer tous les emprunts</a>
     </div>
     <div class="col s4">
         <a class="waves-effect waves-light btn" href="/borrows/list">Filtrer les emprunts en cours</a>
@@ -44,8 +44,8 @@
                 <td><%= new Date(borrow.DATE_DEBUT_EMPRUNT).toLocaleDateString() %></td>
                 <td><%= borrow.HEURE_DEBUT_EMPRUNT %></td>
                 <td><%= borrow.ADDR2 %></td>
-                <td><%= isNaN(borrow.DATE_FIN_EMPRUNT) ? borrow.DATE_FIN_EMPRUNT : new Date(borrow.DATE_FIN_EMPRUNT).toLocaleDateString() %></td>
-                <td><%= (borrow.HEURE_FIN_EMPRUNT=="Emrpunt en cours" ? "Emprunt en cours" : borrow.HEURE_FIN_EMPRUNT) %></td>
+                <td><%= new Date(borrow.DATE_FIN_EMPRUNT).toLocaleDateString() %></td>
+                <td><%= borrow.HEURE_DEBUT_EMPRUNT %></td>
                 <td><%= borrow.KM_PARCOURUS %></td>
             </tr>
             <% }); %>
