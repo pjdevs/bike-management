@@ -251,6 +251,23 @@ class Database {
                            where ID_STATION_FIN is null
                            order by ID_STATION_DEBUT`);
     }
+
+    getAllBorrows() {
+        return this.query(`
+            SELECT * FROM EMPRUNTS WHERE ID_STATION_FIN IS NOT NULL;
+        `);
+    }
+
+    getAllSubs() {
+        return this.query(`
+            SELECT
+                NOM_ADHERENT, PRENOM_ADHERENT, ADRESSE_ADHERENT, DATE_ADHESION_ADHERENT
+            FROM
+                ADHERENTS
+            WHERE
+                ID_ADHERENT<>-1;
+        `);
+    }
 }
 
 

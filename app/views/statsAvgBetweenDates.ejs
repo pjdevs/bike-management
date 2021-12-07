@@ -19,8 +19,10 @@
 </div>
 
 <% if (stats.length != 0) { %>
+<%    const date1 = new Date(day1).toLocaleDateString();%>
+<%    const date2 = new Date(day2).toLocaleDateString();%>
 
-<h1>Moyenne des distances parcourues entre le <em><%= day1 %></em> et le <em><%= day2 %></em></h1>
+<h1>Moyenne des distances parcourues entre le <em><%= date1 %></em> et le <em><%= date2 %></em></h1>
 
 <div class="row">
     <table class="centered highlight responsive-table">

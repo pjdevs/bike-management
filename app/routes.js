@@ -61,6 +61,15 @@ router.get('/', (req, res) => {
         res.render('subscribersCountDay', {subscribers: []});
     }
 })
+.get('/subscribers/allSubs', (req, res) => {
+    database.get().getAllSubs()
+    .then(subscribers => {
+        res.render('subscribersAllSubs', {subscribers: subscribers});
+    })
+    .catch(subscribers => {
+        res.render('subscribersAllSubs', {subscribers: []});
+    });
+})
 .get('/station/:stationID', (req, res) => {
     const db = database.get();
     const stationID = req.params.stationID;
@@ -95,6 +104,13 @@ router.get('/', (req, res) => {
     database.get().borrowBike(req.body.bikeID, req.body.subscriberID)
     .then(_ => {
         res.redirect('/borrows/list');
+    })
+    .catch(errorHandler(res));
+})
+.get('/borrows/allBorrows', (req, res) => {
+    database.get().getAllBorrows()
+    .then(borrows => {
+        res.render('borrowsAllBorrows', {borrows: borrows});
     })
     .catch(errorHandler(res));
 })

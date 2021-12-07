@@ -2,7 +2,7 @@
  * Database connection related informations. 
  */
 exports.database = {
-    host: 'bikes-management.ddns.net',
+    host: 'localhost',
     user: 'cascadeirb',
     password: 'velo',
     database: 'velo'

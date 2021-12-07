@@ -1,0 +1,28 @@
+<%- include('header', {title: 'Adhérents', leaflet: false, css: [], js: [], banner: false}); -%>
+
+<h1>Ils ont adhéré à notre plateforme</h1>
+
+<div class="row">
+    <table class="centered highlight responsive-table">
+        <thead class="red accent-1">
+            <tr>
+                <th colspan="1">Nom</th>
+                <th colspan="1">Prénom</th>
+                <th colspan="1">Adresse</th>
+                <th colspan="1">Date d'adhésion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% subscribers.forEach(subscriber => { %>
+            <tr>
+                <td><%= subscriber.NOM_ADHERENT %></td>
+                <td><%= subscriber.PRENOM_ADHERENT %></td>
+                <td><%= subscriber.ADRESSE_ADHERENT %></td>
+                <td><%= new Date(subscriber.DATE_ADHESION_ADHERENT).toLocaleDateString() %></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('footer'); -%>

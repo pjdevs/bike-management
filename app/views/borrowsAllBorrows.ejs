@@ -1,0 +1,46 @@
+<%- include('header', {title: 'Emprunts', leaflet: false, css: [], js: [], banner: false}); -%>
+
+<div class="row  valign-wrapper">
+    <div class="col s8">
+        <h1>Les emprunts effectués depuis notre création</h1>
+    </div>
+    <div class="col s4">
+        <a class="waves-effect waves-light btn" href="/borrows/list">Afficher les emprunts en cours</a>
+    </div>
+</div>
+
+<div class="row">
+    <table class="centered highlight responsive-table">
+        <thead class="red accent-1">
+            <tr>
+                <th colspan="1">Date d'emprunt</th>
+                <th colspan="1">Date de rendu</th>
+                <th colspan="1">Heure d'emprunt</th>
+                <th colspan="1">Heure de rendu</th>
+                <th colspan="1">km parcourus</th>
+                <th colspan="1">Station d'emprunt</th>
+                <th colspan="1">Station de rendu</th>
+                <th colspan="1">Adhérent concerné</th>
+                <th colspan="1">Vélo emprunté</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% borrows.forEach(borrow => { %>
+            <% const km_parcourus = borrow.KM_FIN_EMPRUNT - borrow.KM_DEBUT_EMPRUNT %>
+            <tr>
+                <td><%= new Date(borrow.DATE_DEBUT_EMPRUNT).toLocaleDateString() %></td>
+                <td><%= new Date(borrow.DATE_FIN_EMPRUNT).toLocaleDateString() %></td>
+                <td><%= borrow.HEURE_DEBUT_EMPRUNT %></td>
+                <td><%= borrow.HEURE_DEBUT_EMPRUNT %></td>
+                <td><%= km_parcourus %></td>
+                <td><%= borrow.ID_STATION_DEBUT %></td>
+                <td><%= borrow.ID_STATION_FIN %></td>
+                <td><%= borrow.ID_ADHERENT %></td>
+                <td><%= borrow.ID_VELO %></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('footer'); -%>
