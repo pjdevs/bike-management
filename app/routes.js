@@ -127,7 +127,7 @@ router.get('/', (req, res) => {
 .post('/return/:borrowID', (req, res) => {
     const db = database.get();
 
-    db.returnBike(req.params.borrowID)
+    db.returnBike(req.params.borrowID, req.body.endKm, req.body.stationID)
     .then(_ => {
         res.redirect('/borrows/list');
     })
