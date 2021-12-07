@@ -40,13 +40,6 @@ router.get('/', (req, res) => {
         res.status(500).json(err);
     });
 })
-.get('/bike/:bikeID', (req, res) => {
-    database.get().getBike(req.params.bikeID)
-    .then(bike => {
-        res.render('bike', {bike: bike});
-    })
-    .catch(errorHandler(res));
-})
 .get('/subscribers', (req, res) => {
     res.render('subscribers');
 })
