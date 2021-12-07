@@ -235,6 +235,13 @@ class Database {
                                                ${subscriberID}, ${bikeID})`);
     }
 
+    addSub(subSurname, subFirstName, subAddr, subCommuneId) {
+        const date = new Date();
+        return this.query(`call ajout_adherent(${subSurname}, ${subFirstName}, ${subAddr}, 
+                                              '${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}',
+                                              ${subCommuneId})`);
+    }
+
     returnBike(borrowID, endKm, endStationID) {
         const date = new Date();
         return this.query(`call fin_emprunt(${borrowID},
