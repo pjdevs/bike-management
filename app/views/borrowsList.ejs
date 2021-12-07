@@ -17,6 +17,9 @@
             </li>
             <% }); %>
         </ul>
+        <% if (borrows.length <= 0) { %>
+            <p>Aucun emprunt en cours...</p>
+        <% } %>
     </div>
 </div>
 

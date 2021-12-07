@@ -4,8 +4,8 @@
 <div class="row">
     <form class="col s12" method="POST" action="/return/<%= borrow.ID_EMPRUNT %>">
         <div class="range-field col s6">
-            <label for="endKm">KM de fin :</label>
-            <input type="range" id="endKm" name="endKm" min="<%= borrow.KM_DEBUT_EMPRUNT + 1 %>" max="<%= borrow.KM_DEBUT_EMPRUNT + 500 %>" />
+            <label for="endKm">km de fin :</label>
+            <input type="range" id="endKm" name="endKm" min="<%= borrow.KM_DEBUT_EMPRUNT %>" max="<%= borrow.KM_DEBUT_EMPRUNT + 100 %>" />
         </div>  
         <div class="input-field col s6">
             <input id="stationID" name="stationID" type="number" value="<%= stations[0].ID_STATION %>" readonly>
