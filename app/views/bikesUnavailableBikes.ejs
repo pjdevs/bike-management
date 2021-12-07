@@ -1,9 +1,9 @@
 <%- include('header', {title: 'Vélos', leaflet: false, css: [], js: [], banner: false}); -%>
 
 <div class="row">
-    <h1>L'ensemble de nos vélos</h1>
+    <h1>L'ensemble de nos vélos en cours d'utilisation</h1>
+    <a class="waves-effect waves-light btn" href="/bikes/allBikes">Filtrer tous les vélos</a>
     <a class="waves-effect waves-light btn" href="/bikes/availableBikes">Filtrer les vélos disponibles actuellement</a>
-    <a class="waves-effect waves-light btn" href="/bikes/unavailableBikes">Filtrer les vélos en cours d'utilisation</a>
 </div>
 <div class="row">
     <table class="centered highlight responsive-table">
@@ -13,7 +13,6 @@
                 <th colspan="1">Marques</th>
                 <th colspan="1">Etat</th>
                 <th colspan="1">Batterie</th>
-                <th colspan='1'>Numéro de la station</th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +22,6 @@
                     <td><%= bike.MARQUE_VELO %></td>
                     <td><%= bike.ETAT_VELO %></td>
                     <td><%= bike.BATTERIE_VELO %></td>
-                    <td><%= bike.ID_STATION %></td>
             </tr>
             <% }); %>
         </tbody>

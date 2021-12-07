@@ -21,7 +21,7 @@
 
 <% if (subscribers.length != 0) { %>
 
-<h1>Adhérents qui ont utilisé au moins <em><%= nbOfTimes %></em> un vélo le <em><%= day %></em></h1>
+<h1>Adhérents qui ont utilisé au moins <em><%= nbOfTimes %></em> un vélo le <em><%= new Date(day).toLocaleDateString() %></em></h1>
 
 <div class="row">
     <table class="centered highlight responsive-table">

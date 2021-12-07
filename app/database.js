@@ -216,6 +216,12 @@ class Database {
         );
     }
 
+    getUnavailableBikes() {
+        return this.query(`
+        SELECT REFERENCE_VELO, MARQUE_VELO, ETAT_VELO, BATTERIE_VELO, ID_STATION FROM VELOS WHERE ID_STATION IS NULL;   
+        `);
+    }
+
     getAvailableBikes() {
         return this.query(`
             SELECT REFERENCE_VELO, MARQUE_VELO, ETAT_VELO, BATTERIE_VELO, ID_STATION FROM VELOS WHERE ID_STATION IS NOT NULL;

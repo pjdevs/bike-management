@@ -13,9 +13,6 @@ function errorHandler(res) {
 router.get('/', (req, res) => {
     res.render('index');
 })
-.get('/bikes', (req, res) => {
-    res.render('bikes', {bikes: []});
-})
 .get('/bikes/allBikes', (req, res) => {
     database.get().getAllBikes()
     .then(bikes => {
@@ -29,6 +26,15 @@ router.get('/', (req, res) => {
     database.get().getAvailableBikes()
     .then(bikes => {
         res.render('bikesAvailableBikes', {bikes: bikes});
+    })
+    .catch(err => {
+        res.status(500).json(err);
+    });
+})
+.get('/bikes/unavailableBikes', (req, res) => {
+    database.get().getUnavailableBikes()
+    .then(bikes => {
+        res.render('bikesUnavailableBikes', {bikes: bikes});
     })
     .catch(err => {
         res.status(500).json(err);
