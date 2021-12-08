@@ -91,9 +91,11 @@
                     </button>
                 </td>
                 <td>
+                    <% if (!subscriber.EST_SUR_VELO) { %>
                     <button data-target="modal-delete-sub<%= subscriber.ID_ADHERENT %>" class="btn-flat modal-trigger">
                         <i class="material-icons center">delete</i>
                     </button>
+                    <% } %>
                 </td>
             </tr>
             <% }); %>

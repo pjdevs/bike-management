@@ -8,7 +8,6 @@
     - [L'application web](#lapplication-web)
 - [Utilisation](#utilisation)
     - [Contenu](#contenu)
-    - [Bugs connus](#bugs-connus)
 
 ## Description
 
@@ -105,13 +104,6 @@ Voici une liste des fonctionnalitées disponnibles ainsi que leut emplacement :
 - **Gestion des emprunts**, filtre en cours / terminés, rendu des emprunts terminés, emprunt d'un vélo dans l'onglet *Emprunts*
 
 - **Listes de statistiques** sur les vélos / adhérents dans l'onglet *Statistiques*
-
-### Bugs connus
-
-- La supression d'un adhérent en train d'emprunter un vélo est interdite côté base
-avec un trigger et une vérification dans la procédure de supression.
-Cependant, l'erreur n'est pas capturé coté serveur ce qui produit une non réponse du serveur au client.
-La supression reste tout de même impossible mais aucune erreur est indiquée côté client.
 
 ## Auteurs
 
