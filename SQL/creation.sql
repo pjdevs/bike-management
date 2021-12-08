@@ -203,8 +203,6 @@ DELIMITER ;
 
 -- Supprimer un adhérent alors qu'il est en train d'emprunter un vélo
 DELIMITER //
-
-DELIMITER //
 CREATE OR REPLACE TRIGGER ADHERENT_PAS_RENDU
 BEFORE DELETE ON ADHERENTS FOR EACH ROW
 BEGIN
@@ -224,7 +222,7 @@ BEGIN
     INTO
         est_sur_velo;
 
-    IF est_sur_velo THEN
+    IF est_sur_velo = 1 THEN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Impossible de de supprimer un adhérent qui a un trajet en cours';
     END IF;
 END; //
