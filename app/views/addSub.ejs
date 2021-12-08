@@ -1,0 +1,31 @@
+<%- include('header', {title: 'Ajouter', leaflet: false, css: [], js: [], banner: false}); -%>
+
+<div class="col s12">
+    <div class="row">
+        <form class="col s12" method="POST" action="/addSub/">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="subSurname" name="subSurname" type="text">
+                    <label for="subSurname">Nom :</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="subFirstName" name="subFirstName" type="text">
+                    <label for="subSurname">Prénom :</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="subAddr" name="subAddr" type="text">
+                    <label for="subAddr">Adresse :</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="subCommuneId" name="subCommuneId" type="number">
+                    <label for="subCommuneId">Commune :</label>
+                </div>
+            </div>
+            <div class="row">
+                <button type="submit" class="waves-effect waves-light btn">Ajouter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<%- include('footer'); -%>

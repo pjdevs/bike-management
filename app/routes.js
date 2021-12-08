@@ -151,8 +151,14 @@ router.get('/', (req, res) => {
         res.redirect('/borrows/list');
     })
     .catch(errorHandler(res));
-
 })
+// .get('/addSub', (req, res) => {
+//     database.get().addSub(req.body.subSurname, req.body.subFirstName, req.body.subAddr, req.body.subCommuneId)
+//     .then(_ => {
+//         res.redirect('/subscribers/allSubs');
+//     })
+//     .catch(errorHandler(res));
+// })
 .get('/stats', (req, res) => {
     res.render('stats', {stats: {}});
 })
