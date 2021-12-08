@@ -48,7 +48,7 @@
                                     <span class="helper-text" data-error="Le nom n'est pas en majuscule ou contient des caratères invalides" data-success="">en majuscules, ex: DUPONT</span>
                                 </div>
                                 <div class="input-field col s6">
-                                    <input id="subFirstName" class="validate" name="subFirstName" type="text" value="<%= subscriber.PRENOM_ADHERENT %>" required pattern="[A-Z][a-z]+(-[A-Z][a-z]+){0,1}">
+                                    <input id="subFirstName" class="validate" name="subFirstName" type="text" value="<%= subscriber.PRENOM_ADHERENT %>" required pattern="[A-Z][a-zàâçéèêëîïôûùüÿñæœ]+(-[A-Z][a-zàâçéèêëîïôûùüÿñæœ]+){0,1}">
                                     <label for="subSurname">Prénom :</label>
                                     <span class="helper-text" data-error="Le prénom contient des caratères invalides ou n'a pas de majuscule au début" data-success="">ex: Pierre</span>
                                 </div>
@@ -56,7 +56,7 @@
                             <div class="row">
                                 <div class="input-field col s6">
                                     <i class="material-icons prefix">place</i>
-                                    <input id="subAddr" class="validate" name="subAddr" type="text" value="<%= subscriber.ADRESSE_ADHERENT %>" required pattern="([0-9]+,{0,1}){0,1}( {0,1}[a-zA-Z0-9]+)+,{0,1} [0-9]{5},{0,1} [a-zA-Z]+">
+                                    <input id="subAddr" class="validate" name="subAddr" type="text" value="<%= subscriber.ADRESSE_ADHERENT %>" required pattern="([0-9]+,{0,1}){0,1}( {0,1}[a-zàâçéèêëîïôûùüÿñæœA-Z0-9]+)+,{0,1} [0-9]{5},{0,1} [a-zàâçéèêëîïôûùüÿñæœA-Z]+">
                                     <label for="subAddr">Adresse :</label>
                                     <span class="helper-text" data-error="L'adresse en respecte pas le format demandé" data-success="">ex: 7 Rue de la Gare, 33000 Bordeaux</span>
                                 </div>
