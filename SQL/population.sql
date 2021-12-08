@@ -60,9 +60,9 @@ commit;
 
 insert into ADHERENTS values (-1, 'Ancien', 'Utilisateur', 'X', date('2000-00-00'), 1);
 insert into ADHERENTS values (1, 'MOREL', 'Pierre-Jean', '7 Rue Salvador Allende, 33400 Talence', date('2021-11-08'), 3);
-insert into ADHERENTS values (2, 'MARAIS', 'Lucas', '14 Rue Léo Ferré 33400 Pessac', date('2021-11-08'), 2);
+insert into ADHERENTS values (2, 'MARAIS', 'Lucas', '14 Rue Léo Ferré, 33400 Pessac', date('2021-11-08'), 2);
 insert into ADHERENTS values (3, 'MEDINA', 'Enzo', '4 Rue Georges Bonnac, 33000 Bordeaux', date('2021-11-08'), 1);
-insert into ADHERENTS values (4, 'FORNES', 'Guillaume', 'Studio 2, Talence', date('2021-11-15'), 4);
+insert into ADHERENTS values (4, 'FORNES', 'Guillaume', 'Studio 2, 33400 Talence', date('2021-11-15'), 4);
 
 commit;
 

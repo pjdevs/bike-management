@@ -18,27 +18,21 @@ router.get('/', (req, res) => {
     .then(bikes => {
         res.render('bikesAllBikes', {bikes: bikes});
     })
-    .catch(err => {
-        res.status(500).json(err);
-    });
+    .catch(errorHandler(res));
 })
 .get('/bikes/availableBikes', (req, res) => {
     database.get().getAvailableBikes()
     .then(bikes => {
         res.render('bikesAvailableBikes', {bikes: bikes});
     })
-    .catch(err => {
-        res.status(500).json(err);
-    });
+    .catch(errorHandler(res));
 })
 .get('/bikes/unavailableBikes', (req, res) => {
     database.get().getUnavailableBikes()
     .then(bikes => {
         res.render('bikesUnavailableBikes', {bikes: bikes});
     })
-    .catch(err => {
-        res.status(500).json(err);
-    });
+    .catch(errorHandler(res));
 })
 .get('/subscribers', (req, res) => {
     res.render('subscribers');
@@ -65,9 +59,7 @@ router.get('/', (req, res) => {
     .then(subscribers => {
         res.render('subscribersAllSubs', {subscribers: subscribers});
     })
-    .catch(subscribers => {
-        res.render('subscribersAllSubs', {subscribers: []});
-    });
+    .catch(errorHandler(res));
 })
 .get('/station/:stationID', (req, res) => {
     const db = database.get();
@@ -152,13 +144,20 @@ router.get('/', (req, res) => {
     })
     .catch(errorHandler(res));
 })
-// .get('/addSub', (req, res) => {
-//     database.get().addSub(req.body.subSurname, req.body.subFirstName, req.body.subAddr, req.body.subCommuneId)
-//     .then(_ => {
-//         res.redirect('/subscribers/allSubs');
-//     })
-//     .catch(errorHandler(res));
-// })
+.get('/subscribers/addSub', (req, res) => {
+    database.get().getAllCommunes()
+    .then(communes => {
+        res.render('addSub', {communes: communes});
+    })
+    .catch(errorHandler(res));
+})
+.post('/subscribers/addSub', (req, res) => {
+    database.get().addSub(req.body.subSurname, req.body.subFirstName, req.body.subAddr, req.body.subCommuneId)
+    .then(_ => {
+        res.redirect('/subscribers/allSubs');
+    })
+    .catch(errorHandler(res));
+})
 .get('/stats', (req, res) => {
     res.render('stats', {stats: {}});
 })

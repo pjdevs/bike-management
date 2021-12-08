@@ -91,6 +91,10 @@ class Database {
         });
     }
 
+    getAllCommunes() {
+        return this.query(`select * from COMMUNES;`);
+    }
+
     getSubscribersBorrowedMoreThanAtDay(numberOfTime, day) {
         return this.query(`
             SELECT 
@@ -237,7 +241,7 @@ class Database {
 
     addSub(subSurname, subFirstName, subAddr, subCommuneId) {
         const date = new Date();
-        return this.query(`call ajout_adherent(${subSurname}, ${subFirstName}, ${subAddr}, 
+        return this.query(`call ajout_adherent('${subSurname}', '${subFirstName}', '${subAddr}', 
                                               '${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}',
                                               ${subCommuneId})`);
     }

@@ -2,27 +2,37 @@
 
 <div class="col s12">
     <div class="row">
-        <form class="col s12" method="POST" action="/addSub/">
+        <form class="col s12" method="POST" action="/subscribers/addSub">
             <div class="row">
                 <div class="input-field col s6">
-                    <input id="subSurname" name="subSurname" type="text">
+                    <input id="subSurname" class="validate" name="subSurname" type="text" required pattern="[A-Z]+([ -][A-Z]+){0,1}">
                     <label for="subSurname">Nom :</label>
+                    <span class="helper-text" data-error="Le nom n'est pas en majuscule ou contient des caratères invalides" data-success="">en majuscules, ex: DUPONT</span>
                 </div>
                 <div class="input-field col s6">
-                    <input id="subFirstName" name="subFirstName" type="text">
+                    <input id="subFirstName" class="validate" name="subFirstName" type="text" required pattern="[A-Z][a-z]+(-[A-Z][a-z]+){0,1}">
                     <label for="subSurname">Prénom :</label>
-                </div>
-                <div class="input-field col s6">
-                    <input id="subAddr" name="subAddr" type="text">
-                    <label for="subAddr">Adresse :</label>
-                </div>
-                <div class="input-field col s6">
-                    <input id="subCommuneId" name="subCommuneId" type="number">
-                    <label for="subCommuneId">Commune :</label>
+                    <span class="helper-text" data-error="Le prénom contient des caratères invalides ou n'a pas de majuscule au début" data-success="">ex: Pierre</span>
                 </div>
             </div>
             <div class="row">
-                <button type="submit" class="waves-effect waves-light btn">Ajouter</button>
+                <div class="input-field col s6">
+                    <i class="material-icons prefix">place</i>
+                    <input id="subAddr" class="validate" name="subAddr" type="text" required pattern="[0-9]+( [a-zA-Z]+)+, [0-9]{5} [a-zA-Z]+">
+                    <label for="subAddr">Adresse :</label>
+                    <span class="helper-text" data-error="L'adresse en respecte pas le format demandé'" data-success="">ex: 7 Rue de la Gare, 33000 Bordeaux</span>
+                </div>
+                <div class="input-field col s6">
+                    <select class="validate" id="subCommuneId" name="subCommuneId">
+                        <% communes.forEach(commune => { %>
+                        <option value="<%= commune.ID_COMMUNE %>"><%= commune.NOM_COMMUNE %></option>
+                        <% }); %>
+                      </select>
+                      <label for="subCommuneId">Commune :</label>
+                </div>
+            </div>
+            <div class="row">
+                <button type="submit" class="waves-effect waves-light btn">Adhérer</button>
             </div>
         </form>
     </div>

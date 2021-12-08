@@ -4,4 +4,5 @@ document.addEventListener('DOMContentLoaded', function () {
     M.Datepicker.init(document.querySelectorAll('.datepicker'), {});
     M.Tooltip.init(document.querySelectorAll('.tooltipped'), {});
     M.Range.init(document.querySelectorAll("input[type=range]"));
+    M.FormSelect.init(document.querySelectorAll('select'), {})
 });
