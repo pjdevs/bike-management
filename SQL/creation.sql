@@ -533,8 +533,28 @@ DELIMITER //
 CREATE OR REPLACE PROCEDURE supprimer_adherent_id
 (IN id INT)
 BEGIN
-        UPDATE EMPRUNTS SET ID_ADHERENT=-1 WHERE ID_ADHERENT=id;
-        DELETE FROM ADHERENTS WHERE ID_ADHERENT=id AND id>0; 
+    DECLARE est_sur_velo BOOLEAN;
+
+    SELECT
+        ID_STATION_FIN IS NULL
+    FROM
+        EMPRUNTS
+    WHERE
+        ID_EMPRUNT = (SELECT
+                        ID_EMPRUNT
+                      FROM
+                          DERNIER_EMPRUNT_ADHERENT
+                      WHERE
+                          ID_ADHERENT = id)
+    INTO
+        est_sur_velo;
+
+    IF est_sur_velo THEN
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Impossible de de supprimer un adhérent qui a un trajet en cours';
+    END IF;
+
+    UPDATE EMPRUNTS SET ID_ADHERENT=-1 WHERE ID_ADHERENT=id;
+    DELETE FROM ADHERENTS WHERE ID_ADHERENT=id AND id>0; 
 END //
 DELIMITER ;
 
@@ -570,26 +590,6 @@ DELIMITER //
 CREATE OR REPLACE PROCEDURE supprimer_velo_id
 (IN id INT)
 BEGIN
-    DECLARE est_sur_velo BOOLEAN;
-
-    SELECT
-        ID_STATION_FIN IS NULL
-    FROM
-        EMPRUNTS
-    WHERE
-        ID_EMPRUNT = (SELECT
-                        ID_EMPRUNT
-                      FROM
-                          DERNIER_EMPRUNT_ADHERENT
-                      WHERE
-                          ID_ADHERENT = id)
-    INTO
-        est_sur_velo;
-
-    IF est_sur_velo THEN
-        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Impossible de de supprimer un adhérent qui a un trajet en cours';
-    END IF;
-
     DELETE FROM EMPRUNTS WHERE ID_VELO=id;
     DELETE FROM VELOS WHERE ID_VELO=id;
 END //
