@@ -14,8 +14,9 @@
                 <th colspan="1">Nom</th>
                 <th colspan="1">Prénom</th>
                 <th colspan="1">Adresse</th>
+                <th colspan="1">Commune</th>
                 <th colspan="1">Date d'adhésion</th>
-                <th colspan="1"></th>
+                <th colspan="2"></th>
             </tr>
         </thead>
         <tbody>
@@ -33,11 +34,62 @@
                     </form>
                 </div>
             </div>
+            <div id="modal-update-sub<%= subscriber.ID_ADHERENT %>" class="modal">
+                    <div class="modal-content">
+                        <h4>Mettre à jour les informations</h4>
+                        <p>Saisissez les nouvelles informations concernant <%= subscriber.PRENOM_ADHERENT %> <%= subscriber.NOM_ADHERENT %> :</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form class="col s12" method="POST" action="/subscribers/update/<%= subscriber.ID_ADHERENT %>">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input id="subSurname" class="validate" name="subSurname" type="text" value="<%= subscriber.NOM_ADHERENT %>" required pattern="[A-Z]+([ -][A-Z]+){0,1}">
+                                    <label for="subSurname">Nom :</label>
+                                    <span class="helper-text" data-error="Le nom n'est pas en majuscule ou contient des caratères invalides" data-success="">en majuscules, ex: DUPONT</span>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input id="subFirstName" class="validate" name="subFirstName" type="text" value="<%= subscriber.PRENOM_ADHERENT %>" required pattern="[A-Z][a-z]+(-[A-Z][a-z]+){0,1}">
+                                    <label for="subSurname">Prénom :</label>
+                                    <span class="helper-text" data-error="Le prénom contient des caratères invalides ou n'a pas de majuscule au début" data-success="">ex: Pierre</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <i class="material-icons prefix">place</i>
+                                    <input id="subAddr" class="validate" name="subAddr" type="text" value="<%= subscriber.ADRESSE_ADHERENT %>" required pattern="([0-9]+,{0,1}){0,1}( {0,1}[a-zA-Z0-9]+)+,{0,1} [0-9]{5},{0,1} [a-zA-Z]+">
+                                    <label for="subAddr">Adresse :</label>
+                                    <span class="helper-text" data-error="L'adresse en respecte pas le format demandé" data-success="">ex: 7 Rue de la Gare, 33000 Bordeaux</span>
+                                </div>
+                                <div class="col s6">
+                                    <label for="subCommuneId">Commune :</label>
+                                    <select class="browser-default" id="subCommuneId" name="subCommuneId">
+                                        <% communes.forEach(commune => { %>
+                                        <option value="<%= commune.ID_COMMUNE %>" <% if (subscriber.ID_COMMUNE == commune.ID_COMMUNE) { %>selected<% } %>>
+                                            <%= commune.NOM_COMMUNE %>
+                                        </option>
+                                        <% }); %>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <a class="modal-close waves-effect waves-light btn-flat">Annuler</a>
+                                <button type="submit" class="green lighten-2 waves-effect waves-light btn">Valider</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             <tr>
                 <td><%= subscriber.NOM_ADHERENT %></td>
                 <td><%= subscriber.PRENOM_ADHERENT %></td>
                 <td><%= subscriber.ADRESSE_ADHERENT %></td>
+                <td><%= subscriber.COMMUNE_ADHERENT %></td>
                 <td><%= new Date(subscriber.DATE_ADHESION_ADHERENT).toLocaleDateString() %></td>
+                <td>
+                    <button data-target="modal-update-sub<%= subscriber.ID_ADHERENT %>" class="btn-flat modal-trigger">
+                        <i class="material-icons center">edit</i>
+                    </button>
+                </td>
                 <td>
                     <button data-target="modal-delete-sub<%= subscriber.ID_ADHERENT %>" class="btn-flat modal-trigger">
                         <i class="material-icons center">delete</i>

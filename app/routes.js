@@ -55,9 +55,15 @@ router.get('/', (req, res) => {
     }
 })
 .get('/subscribers/allSubs', (req, res) => {
-    database.get().getAllSubs()
+    const db = database.get();
+    
+    db.getAllSubs()
     .then(subscribers => {
-        res.render('subscribersAllSubs', {subscribers: subscribers});
+        db.getAllCommunes()
+        .then(communes => {
+            res.render('subscribersAllSubs', {subscribers: subscribers, communes: communes});
+        })
+        .catch(errorHandler(res));
     })
     .catch(errorHandler(res));
 })
@@ -160,6 +166,14 @@ router.get('/', (req, res) => {
 })
 .post('/subscribers/delete/:id', (req, res) => {
     database.get().deleteSub(req.params.id)
+    .then(_ => {
+        res.redirect('/subscribers/allSubs');
+    })
+    .catch(errorHandler(res));
+})
+.post('/subscribers/update/:id', (req, res) => {
+    console.log(req.params.id, req.body.subSurname, req.body.subFirstName, req.body.subAddr, req.body.subCommuneId);
+    database.get().updateSub(req.params.id, req.body.subSurname, req.body.subFirstName, req.body.subAddr, req.body.subCommuneId)
     .then(_ => {
         res.redirect('/subscribers/allSubs');
     })

@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="input-field col s6">
                     <i class="material-icons prefix">place</i>
-                    <input id="subAddr" class="validate" name="subAddr" type="text" required pattern="[0-9]+,{0,1}( [a-zA-Z]+)+, [0-9]{5},{0,1} [a-zA-Z]+">
+                    <input id="subAddr" class="validate" name="subAddr" type="text" required pattern="([0-9]+,{0,1}){0,1}( {0,1}[a-zA-Z0-9]+)+,{0,1} [0-9]{5},{0,1} [a-zA-Z]+">
                     <label for="subAddr">Adresse :</label>
                     <span class="helper-text" data-error="L'adresse en respecte pas le format demandé'" data-success="">ex: 7 Rue de la Gare, 33000 Bordeaux</span>
                 </div>

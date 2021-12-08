@@ -246,6 +246,20 @@ class Database {
                                               ${subCommuneId})`);
     }
 
+    updateSub(subID, subSurname, subFirstName, subAddr, subCommuneId) {
+        return this.query(`
+            UPDATE
+                ADHERENTS
+            SET
+                NOM_ADHERENT='${subSurname}',
+                PRENOM_ADHERENT='${subFirstName}',
+                ADRESSE_ADHERENT='${subAddr}', 
+                ID_COMMUNE=${subCommuneId}
+            WHERE
+                ID_ADHERENT=${subID}`);
+    }
+
+
     deleteSub(subID) {
         return this.query(`call supprimer_adherent_id(${subID})`);    
     }
@@ -313,9 +327,9 @@ class Database {
     getAllSubs() {
         return this.query(`
             SELECT
-                ID_ADHERENT, NOM_ADHERENT, PRENOM_ADHERENT, ADRESSE_ADHERENT, DATE_ADHESION_ADHERENT
+                ID_ADHERENT, NOM_ADHERENT, PRENOM_ADHERENT, ADRESSE_ADHERENT, DATE_ADHESION_ADHERENT, ID_COMMUNE, NOM_COMMUNE AS COMMUNE_ADHERENT
             FROM
-                ADHERENTS
+                ADHERENTS natural join COMMUNES
             WHERE
                 ID_ADHERENT<>-1;
         `);
