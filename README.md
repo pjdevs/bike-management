@@ -94,17 +94,17 @@ Si tout se passe bien le seveur est accessible par défaut à l'adresse
 L'application est censé être intuitive et concerne plutôt le côté administrateur.
 Voici une liste des fonctionnalitées disponnibles ainsi que leut emplacement :
 
-- **List des stations** sur la page d'acceuil sous forme de carte.
+- **Liste des stations** sur la page d'accueil sous forme de carte.
 
 - **Consultation** de la station et de ses vélos en cliquant sur le marker et ensuite sur l'adresse
 
-- Consultation, ajout, modification et supression des adhérents dans l'onglet *Adhérents* du menu
+- **Consultation, ajout, modification et supression** des adhérents dans l'onglet *Adhérents* du menu
 
-- Liste des vélos avec filtre en cours d'emprunt / rendus dans l'onglet *Vélos*
+- **Liste des vélos avec filtre** en cours d'emprunt / rendus dans l'onglet *Vélos*
 
-- Gestion des emprunts, filtre en cours / terminés, rendu des emprunts terminés, emprunt d'un vélo dans l'onglet *Emprunts*
+- **Gestion des emprunts**, filtre en cours / terminés, rendu des emprunts terminés, emprunt d'un vélo dans l'onglet *Emprunts*
 
-- Lites de statistiques sur les vélos / adhérents dans l'onglet *Statistiques*
+- **Listes de statistiques** sur les vélos / adhérents dans l'onglet *Statistiques*
 
 ### Bugs connus
 
@@ -112,8 +112,6 @@ Voici une liste des fonctionnalitées disponnibles ainsi que leut emplacement :
 avec un trigger et une vérification dans la procédure de supression.
 Cependant, l'erreur n'est pas capturé coté serveur ce qui produit une non réponse du serveur au client.
 La supression reste tout de même impossible mais aucune erreur est indiquée côté client.
-
-- ...
 
 ## Auteurs
 
