@@ -115,7 +115,7 @@ La supression reste tout de même impossible mais aucune erreur est indiquée c�
 
 - ...
 
-## Autheurs
+## Auteurs
 
 - [MOREL Pierre-Jean](https://github.com/pjdevs)
 - [MARAIS Lucas](https://github.com/luks-m)
