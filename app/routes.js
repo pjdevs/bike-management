@@ -172,7 +172,6 @@ router.get('/', (req, res) => {
     .catch(errorHandler(res));
 })
 .post('/subscribers/update/:id', (req, res) => {
-    console.log(req.params.id, req.body.subSurname, req.body.subFirstName, req.body.subAddr, req.body.subCommuneId);
     database.get().updateSub(req.params.id, req.body.subSurname, req.body.subFirstName, req.body.subAddr, req.body.subCommuneId)
     .then(_ => {
         res.redirect('/subscribers/allSubs');
