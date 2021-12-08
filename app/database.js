@@ -246,6 +246,10 @@ class Database {
                                               ${subCommuneId})`);
     }
 
+    deleteSub(subID) {
+        return this.query(`call supprimer_adherent_id(${subID})`);    
+    }
+
     returnBike(borrowID, endKm, endStationID) {
         const date = new Date();
         return this.query(`call fin_emprunt(${borrowID},
@@ -309,7 +313,7 @@ class Database {
     getAllSubs() {
         return this.query(`
             SELECT
-                NOM_ADHERENT, PRENOM_ADHERENT, ADRESSE_ADHERENT, DATE_ADHESION_ADHERENT
+                ID_ADHERENT, NOM_ADHERENT, PRENOM_ADHERENT, ADRESSE_ADHERENT, DATE_ADHESION_ADHERENT
             FROM
                 ADHERENTS
             WHERE

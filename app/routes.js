@@ -158,6 +158,13 @@ router.get('/', (req, res) => {
     })
     .catch(errorHandler(res));
 })
+.post('/subscribers/delete/:id', (req, res) => {
+    database.get().deleteSub(req.params.id)
+    .then(_ => {
+        res.redirect('/subscribers/allSubs');
+    })
+    .catch(errorHandler(res));
+})
 .get('/stats', (req, res) => {
     res.render('stats', {stats: {}});
 })

@@ -15,15 +15,34 @@
                 <th colspan="1">Prénom</th>
                 <th colspan="1">Adresse</th>
                 <th colspan="1">Date d'adhésion</th>
+                <th colspan="1"></th>
             </tr>
         </thead>
         <tbody>
             <% subscribers.forEach(subscriber => { %>
+            <div id="modal-delete-sub<%= subscriber.ID_ADHERENT %>" class="modal">
+                <div class="modal-content">
+                    <h4>Supprimer un adhérent</h4>
+                    <p>Voulez-vous vraiment supprimer <%= subscriber.PRENOM_ADHERENT %> <%= subscriber.NOM_ADHERENT %> ?</p>
+                    <p>Ses données seront définitivement supprimées du service</p>
+                </div>
+                <div class="modal-footer">
+                    <form method="POST" action="/subscribers/delete/<%= subscriber.ID_ADHERENT %>">
+                        <a class="modal-close waves-effect waves-light btn-flat">Annuler</a>
+                        <button type="submit" class="red lighten-2 waves-effect btn">Supprimer</button>
+                    </form>
+                </div>
+            </div>
             <tr>
                 <td><%= subscriber.NOM_ADHERENT %></td>
                 <td><%= subscriber.PRENOM_ADHERENT %></td>
                 <td><%= subscriber.ADRESSE_ADHERENT %></td>
                 <td><%= new Date(subscriber.DATE_ADHESION_ADHERENT).toLocaleDateString() %></td>
+                <td>
+                    <button data-target="modal-delete-sub<%= subscriber.ID_ADHERENT %>" class="btn-flat modal-trigger">
+                        <i class="material-icons center">delete</i>
+                    </button>
+                </td>
             </tr>
             <% }); %>
         </tbody>
