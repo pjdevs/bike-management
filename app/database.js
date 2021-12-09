@@ -194,7 +194,9 @@ class Database {
             SELECT
                 ID_STATION, ADRESSE_STATION, concat(NB_PLACES_DISPO, ' / ', NOMBRE_BORNES_STATION) RATIO
             FROM
-                STATIONS natural join NB_PLACES_DISPO_STATION
+                STATIONS
+            NATURAL JOIN
+                 NB_PLACES_DISPO_STATION
             WHERE NB_PLACES_DISPO > 0
             ORDER BY NB_PLACES_DISPO DESC;
         `);

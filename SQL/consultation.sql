@@ -93,10 +93,10 @@ HAVING
 --     Le nombre de places disponicles par station.
 -- ========================================================================================================================
 SELECT 
-        STATIONS.ID_STATION, STATIONS.ADRESSE_STATION, STATIONS.NOMBRE_BORNES_STATION-NB_VELOS AS NB_PLACES_DISPO 
+        STATIONS.ID_STATION, COALESCE(STATIONS.NOMBRE_BORNES_STATION-NB_VELOS, STATIONS.NOMBRE_BORNES_STATION) AS NB_PLACES_DISPO 
     FROM
         STATIONS 
-    JOIN 
+    LEFT OUTER JOIN 
         (SELECT 
             ID_STATION, COUNT(*) AS NB_VELOS 
         FROM 
@@ -104,6 +104,6 @@ SELECT
         GROUP BY 
             ID_STATION 
         HAVING 
-            ID_STATION IS NOT NULL) AS NB_VELOS_STATIONS
+            ID_STATION IS NOT NULL) AS NB_VELOS_STATIONS3
     USING(ID_STATION)
 ;
