@@ -144,28 +144,6 @@ AS
 ;
 
 -- ============================================================
---    Fonctions utiles
--- ============================================================
-
--- Prédit si un adhérent est actuellement en train d'emprunter un vélo
--- BUG à résoudre
--- CREATE OR REPLACE FUNCTION adherent_est_sur_velo(id_adherent INT) RETURNS BOOLEAN
--- RETURN
---     (SELECT
---         ID_STATION_FIN IS NULL
---     FROM
---         EMPRUNTS
---     WHERE
---         ID_EMPRUNT = (SELECT
---                         ID_EMPRUNT
---                       FROM
---                           DERNIER_EMPRUNT_ADHERENT
---                       WHERE
---                           ID_ADHERENT = id_adherent)
---     )
--- ;
-
--- ============================================================
 --    Contraintes d'intégrité supplémentaires
 -- ============================================================
 
@@ -187,23 +165,6 @@ BEGIN
     END IF;
 END; //
 DELIMITER ;
-
---Le velo n'a pas été affecté, avant, à la station de fin de l'emprunt
--- DELIMITER //
--- CREATE OR REPLACE TRIGGER VELO_MAUVAISE_STATION
--- BEFORE UPDATE ON EMPRUNTS FOR EACH ROW
--- BEGIN
---     DECLARE station_velo INT;
-
---     IF NEW.ID_STATION_FIN IS NOT NULL THEN
---         SELECT ID_STATION FROM VELOS WHERE VELOS.ID_VELO = NEW.ID_VELO INTO station_velo;
-
---         IF station_velo <> NEW.ID_STATION_FIN THEN
---             SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'Le vélo n a pas été rendu dans la station de fin désignée';
---         END IF;
---     END IF;
--- END; //
--- DELIMITER ;
 
 -- Supprimer un adhérent alors qu'il est en train d'emprunter un vélo
 DELIMITER //
