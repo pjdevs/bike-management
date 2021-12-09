@@ -1,0 +1,40 @@
+<%- include('header', {title: 'Ajouter', leaflet: false, css: [], js: [], banner: false}); -%>
+
+<div class="col s12">
+    <div class="row">
+        <form class="col s12" method="POST" action="/bikes/addBike">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="bikeRef" class="validate" name="bikeRef" type="text">
+                    <label for="bikeRef">Référence :</label>
+                    <span class="helper-text" data-success="">ex: Tilt 500 E</span>
+                </div>
+                <div class="input-field col s6">
+                    <input id="bikeBrand" class="validate" name="bikeBrand" type="text">
+                    <label for="bikeBrand">Marque :</label>
+                    <span class="helper-text">ex: B'Twin</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="bikeKm" class="validate" name="bikeKm" type="number">
+                    <label for="bikeKm">km :</label>
+                    <span class="helper-text">ex: 250</span>
+                </div>
+                <div class="input-field col s6">
+                    <select id="bikeStationId" class="validate" name="bikeStationId">
+                        <% stations.forEach(station => { %>
+                        <option value="<%= station.ID_STATION %>"><%= station.ADRESSE_STATION %></option>
+                        <% }); %>
+                    </select>
+                    <label for="bikeStationId">Station :</label>
+                </div>
+            </div>
+            <div class="row">
+                <button type="submit" class="waves-effect waves-light btn"> <i class="material-icons left">add_box</i> Ajouter </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<%- include('footer'); -%>

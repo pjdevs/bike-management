@@ -14,7 +14,8 @@ router.get('/', (req, res) => {
     res.render('index');
 })
 .get('/bikes/allBikes', (req, res) => {
-    database.get().getAllBikes()
+    const db = database.get();
+    db.getAllBikes()
     .then(bikes => {
         res.render('bikesAllBikes', {bikes: bikes});
     })
@@ -56,7 +57,6 @@ router.get('/', (req, res) => {
 })
 .get('/subscribers/allSubs', (req, res) => {
     const db = database.get();
-    
     db.getAllSubs()
     .then(subscribers => {
         db.getAllCommunes()
@@ -175,6 +175,27 @@ router.get('/', (req, res) => {
     database.get().updateSub(req.params.id, req.body.subSurname, req.body.subFirstName, req.body.subAddr, req.body.subCommuneId)
     .then(_ => {
         res.redirect('/subscribers/allSubs');
+    })
+    .catch(errorHandler(res));
+})
+.get('/bikes/addBike', (req, res) => {
+    database.get().getStationListWhereCanReturn()
+    .then(stations => {
+        res.render('addBike', {stations: stations})
+    })
+    .catch(errorHandler(res));
+})
+.post('/bikes/addBike', (req, res) => {
+    database.get().addBike(req.body.bikeRef, req.body.bikeBrand, req.body.bikeKm, req.body.bikeStationId)
+    .then(_ => {
+        res.redirect('/bikes/allBikes');
+    })
+    .catch(errorHandler(res));
+})
+.post('/bikes/delete/:id', (req, res) => {
+    database.get().deleteBike(req.params.id)
+    .then(_ => {
+        res.redirect('/bikes/allBikes');
     })
     .catch(errorHandler(res));
 })

@@ -2,8 +2,16 @@
 
 <div class="row">
     <h1>L'ensemble de nos vélos</h1>
-    <a class="waves-effect waves-light btn" href="/bikes/availableBikes">Filtrer les vélos disponibles actuellement</a>
-    <a class="waves-effect waves-light btn" href="/bikes/unavailableBikes">Filtrer les vélos en cours d'utilisation</a>
+
+    <div class="col s4">
+        <a class="waves-effect waves-light btn" href="/bikes/availableBikes">Filtrer les vélos disponibles actuellement</a>
+    </div>
+    <div class="col s4">
+        <a class="waves-effect waves-light btn" href="/bikes/unavailableBikes">Filtrer les vélos en cours d'utilisation</a>
+    </div>
+    <div class="col s4">
+        <a class="waves-effect lighten-2 waves-light btn" href="/bikes/addBike"> <i class="material-icons left">directions_bike</i> Ajouter un vélo</a>
+    </div>
 </div>
 <div class="row">
     <table class="centered highlight responsive-table">
@@ -14,16 +22,37 @@
                 <th colspan="1">Etat</th>
                 <th colspan="1">Batterie</th>
                 <th colspan='1'>Numéro de la station</th>
+                <th colspan="1"></th>
             </tr>
         </thead>
         <tbody>
             <% bikes.forEach(bike => { %>
-                <tr>
-                    <td><%= bike.REFERENCE_VELO %></td>
-                    <td><%= bike.MARQUE_VELO %></td>
-                    <td><%= bike.ETAT_VELO %></td>
-                    <td><%= bike.BATTERIE_VELO %></td>
-                    <td><%= bike.ID_STATION %></td>
+            <div id="modal-delete-bike<%= bike.ID_VELO %>" class="modal">
+                <div class="modal-content">
+                    <h4>Supprimer un vélo</h4>
+                    <p>Voulez-vous vraiment supprimer <%= bike.REFERENCE_VELO %> <%= bike.MARQUE_VELO %> ?</p>
+                    <p>Ses données seront définitivement supprimées du service</p>
+                </div>
+                <div class="modal-footer">
+                    <form method="POST" action="/bikes/delete/<%= bike.ID_VELO %>">
+                        <a class="modal-close waves-effect waves-light btn-flat">Annuler</a>
+                        <button type="submit" class="red lighten-2 waves-effect btn">Supprimer</button>
+                    </form>
+                </div>
+            </div>
+            <tr>
+                <td><%= bike.REFERENCE_VELO %></td>
+                <td><%= bike.MARQUE_VELO %></td>
+                <td><%= bike.ETAT_VELO %></td>
+                <td><%= bike.BATTERIE_VELO %></td>
+                <td><%= bike.ID_STATION %></td>
+                <td>
+                    <% if (!isNaN(bike.ID_STATION)) { %>
+                    <button data-target="modal-delete-bike<%= bike.ID_VELO %>" class="btn-flat modal-trigger">
+                        <i class="material-icons center">delete</i>
+                    </button>
+                    <% } %>
+                </td>
             </tr>
             <% }); %>
         </tbody>

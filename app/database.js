@@ -216,7 +216,7 @@ class Database {
 
     getAllBikes() {
         return this.query(`
-            SELECT REFERENCE_VELO, MARQUE_VELO, ETAT_VELO, BATTERIE_VELO, COALESCE(ID_STATION, "En cours d'utilisation") AS ID_STATION FROM VELOS;`
+            SELECT ID_VELO, REFERENCE_VELO, MARQUE_VELO, ETAT_VELO, BATTERIE_VELO, COALESCE(ID_STATION, "En cours d'utilisation") AS ID_STATION FROM VELOS;`
         );
     }
 
@@ -262,6 +262,17 @@ class Database {
 
     deleteSub(subID) {
         return this.query(`call supprimer_adherent_id(${subID})`);    
+    }
+
+    addBike(bikeRef, bikeBrand, bikeKm, bikeStationId) {
+        const date = new Date();
+        return this.query(`call ajout_velo('${bikeRef}', '${bikeBrand}', 
+                                              '${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}', 
+                                              ${bikeKm}, 'BON', 100, ${bikeStationId})`);
+    }
+
+    deleteBike(bikeID) {
+        return this.query(`call supprimer_velo_id(${bikeID})`);    
     }
 
     returnBike(borrowID, endKm, endStationID) {
