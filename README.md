@@ -11,7 +11,7 @@
 
 ## Description
 
-Ce projet de SGDB effectué à l'ENSEIRB-MATMECA et propose
+Ce projet de SGDB, effectué à l'ENSEIRB-MATMECA, propose
 de modéliser un système d'emprunt de vélos dans des stations par des adhérents.
 
 Ce projet contient :
@@ -52,7 +52,7 @@ Ensuite, il faut peupler la base avec des données de départ :
 Le fichier `SQL/all.sql` effectue les deux actions précédentes et peut être directement `source`.
 
 La base est maintenant prête. Elle peut être utilisée avec l'application
-ou alors on nous pouvons directement l'interroger avec des requêtes SQL.
+ou alors nous pouvons directement l'interroger avec des requêtes SQL.
 Des listes de requêtes utiles et/ou utilisées dans notre application se trouvent
 dans `SQL/consultation.sql`, `SQL/statistiques.sql`, `SQL/maj.sql`.
 
@@ -83,7 +83,7 @@ Ensuite, le serveur peut être lancé :
 $ node server.js
 ```
 
-Si tout se passe bien le seveur est accessible par défaut à l'adresse
+Si tout se passe bien le serveur est accessible par défaut à l'adresse
 [http://localhost:8888](http://localhost:8888).
 
 ## Utilisation
@@ -99,9 +99,11 @@ Voici une liste des fonctionnalitées disponnibles ainsi que leut emplacement :
 
 - **Consultation, ajout, modification et supression** des adhérents dans l'onglet *Adhérents* du menu
 
+- **Consultation, ajout, modification et supression** des vélos dans l'onglet *Vélos* du menu
+
 - **Liste des vélos avec filtre** en cours d'emprunt / rendus dans l'onglet *Vélos*
 
-- **Gestion des emprunts**, filtre en cours / terminés, rendu des emprunts terminés, emprunt d'un vélo dans l'onglet *Emprunts*
+- **Gestion des emprunts**, filtre en cours / terminés, **rendu** des emprunts terminés, **emprunt** d'un vélo dans l'onglet *Emprunts*
 
 - **Listes de statistiques** sur les vélos / adhérents dans l'onglet *Statistiques*
 
