@@ -199,6 +199,13 @@ router.get('/', (req, res) => {
     })
     .catch(errorHandler(res));
 })
+.post('/bikes/update/:id', (req, res) => {
+    database.get().updateBike(req.params.id, req.body.bikeRef, req.body.bikeBrand, req.body.bikeState, req.body.bikeBattery)
+    .then(_ => {
+        res.redirect('/bikes/allBikes');
+    })
+    .catch(errorHandler(res));
+})
 .get('/stats', (req, res) => {
     res.render('stats', {stats: {}});
 })

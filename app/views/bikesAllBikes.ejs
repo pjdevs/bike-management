@@ -22,7 +22,7 @@
                 <th colspan="1">Etat</th>
                 <th colspan="1">Batterie</th>
                 <th colspan='1'>Numéro de la station</th>
-                <th colspan="1"></th>
+                <th colspan="2"></th>
             </tr>
         </thead>
         <tbody>
@@ -40,12 +40,56 @@
                     </form>
                 </div>
             </div>
+            <div id="modal-update-bike<%= bike.ID_VELO %>" class="modal">
+                <div class="modal-content">
+                    <h4>Mettre à jour les informations</h4>
+                    <p>Saisissez les nouvelles informations concernant <%= bike.REFERENCE_VELO %> <%= bike.MARQUE_VELO %> :</p>
+                </div>
+                <div class="modal-footer">
+                    <form class="col s12" method="POST" action="/bikes/update/<%= bike.ID_VELO %>">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="bikeRef" class="validate" name="bikeRef" type="text" value="<%= bike.REFERENCE_VELO %>">
+                                <label for="bikeRef">Référence :</label>
+                                <span class="helper-text" >ex: Tilt 500 E</span>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="bikeBrand" class="validate" name="bikeBrand" type="text" value="<%= bike.MARQUE_VELO %>">
+                                <label for="bikeBrand">Marque :</label>
+                                <span class="helper-text">ex: B'Twin</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="bikeState" class="validate" name="bikeState" type="text" value="<%= bike.ETAT_VELO %>" required pattern="{BON, MOYEN, MAUVAIS}">
+                                <label for="bikeState">Etat :</label>
+                                <span class="helper-text" data-error="L'état doit être BON, MOYEN ou MAUVAIS" data-success="">ex: BON</span>
+                            </div>
+                            <div class="col s6">
+                                <label for="bikeBattery">Batterie :</label>
+                                <p class="range-filed">
+                                    <input type="range" id="bikeBattery" name="bikeBattery" min="0" max="100" />
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <a class="modal-close waves-effect waves-light btn-flat">Annuler</a>
+                            <button type="submit" class="green lighten-2 waves-effect waves-light btn">Valider</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <tr>
                 <td><%= bike.REFERENCE_VELO %></td>
                 <td><%= bike.MARQUE_VELO %></td>
                 <td><%= bike.ETAT_VELO %></td>
                 <td><%= bike.BATTERIE_VELO %></td>
                 <td><%= bike.ID_STATION %></td>
+                <td>
+                    <button data-target="modal-update-bike<%= bike.ID_VELO %>" class="btn-flat modal-trigger">
+                        <i class="material-icons center">edit</i>
+                    </button>
+                </td>
                 <td>
                     <% if (!isNaN(bike.ID_STATION)) { %>
                     <button data-target="modal-delete-bike<%= bike.ID_VELO %>" class="btn-flat modal-trigger">

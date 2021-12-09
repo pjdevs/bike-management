@@ -271,6 +271,19 @@ class Database {
                                               ${bikeKm}, 'BON', 100, ${bikeStationId})`);
     }
 
+    updateBike(bikeID, bikeRef, bikeBrand, bikeState, bikeBattery) {
+        return this.query(`
+            UPDATE
+                VELOS
+            SET
+                REFERENCE_VELO='${bikeRef}',
+                MARQUE_VELO='${bikeBrand}',
+                ETAT_VELO='${bikeState}', 
+                BATTERIE_VELO=${bikeBattery}
+            WHERE
+                ID_VELO=${bikeID}`);
+    }
+
     deleteBike(bikeID) {
         return this.query(`call supprimer_velo_id(${bikeID})`);    
     }
