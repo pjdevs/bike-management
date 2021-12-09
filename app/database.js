@@ -327,11 +327,18 @@ class Database {
     getAllSubs() {
         return this.query(`
             SELECT
-                ID_ADHERENT, NOM_ADHERENT, PRENOM_ADHERENT, ADRESSE_ADHERENT, DATE_ADHESION_ADHERENT, ID_COMMUNE, NOM_COMMUNE AS COMMUNE_ADHERENT, ID_STATION_FIN IS NULL AS EST_SUR_VELO
+                DISTINCT ADHERENTS.ID_ADHERENT, NOM_ADHERENT, PRENOM_ADHERENT, ADRESSE_ADHERENT, DATE_ADHESION_ADHERENT, ID_COMMUNE, NOM_COMMUNE AS COMMUNE_ADHERENT, COALESCE(EST_SUR_VELO, 0) AS EST_SUR_VELO
             FROM
-                ADHERENTS natural join COMMUNES natural join DERNIER_EMPRUNT_ADHERENT natural join EMPRUNTS
+                ADHERENTS NATURAL JOIN COMMUNES LEFT OUTER JOIN (
+                    SELECT
+                        ID_ADHERENT, ID_STATION_FIN IS NULL AS EST_SUR_VELO
+                    FROM
+                        DERNIER_EMPRUNT_ADHERENT
+                    NATURAL JOIN
+                        EMPRUNTS) AS TEMP
+                ON TEMP.ID_ADHERENT = ADHERENTS.ID_ADHERENT 
             WHERE
-                ID_ADHERENT<>-1;
+                ADHERENTS.ID_ADHERENT<>-1;
         `);
     }
 }
