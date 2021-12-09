@@ -110,6 +110,8 @@ AS
     SELECT
         ID_ADHERENT, ID_EMPRUNT
     FROM
+        ADHERENTS
+    LEFT OUTER JOIN (
         EMPRUNTS_DATES_MAX
     NATURAL JOIN
         (SELECT
@@ -118,6 +120,8 @@ AS
             EMPRUNTS_DATES_MAX
         GROUP BY
             ID_ADHERENT) AS EMPRUNTS_HEURES_MAX
+    ) USING(ID_ADHERENT)
+    WHERE ID_ADHERENT <> -1
 ;
 
 -- Vue du nombre de places disponnibles par station.
