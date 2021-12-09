@@ -45,10 +45,14 @@ class Database {
     getSubscribersCanBorrow() {
         return this.query(`select ADHERENTS.*
                            from ADHERENTS natural join DERNIER_EMPRUNT_ADHERENT
-                           where ID_EMPRUNT in (
-                               select ID_EMPRUNT from EMPRUNTS
-                               where ID_STATION_FIN is not null
-                           );`);
+                           where 
+                           ID_EMPRUNT is null
+                           or
+                            ID_EMPRUNT in (
+                                select ID_EMPRUNT from EMPRUNTS
+                                where ID_STATION_FIN is not null
+                            )
+                            ;`);
     }
 
     /**

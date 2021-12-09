@@ -107,3 +107,24 @@ SELECT
             ID_STATION IS NOT NULL) AS NB_VELOS_STATIONS3
     USING(ID_STATION)
 ;
+
+
+-- ========================================================================================================================
+--     La liste des adhérents qui peuvent emprunter un vélo (i.e. qui n'ont pas d'emprunt en cours)
+-- ========================================================================================================================
+SELECT
+    ADHERENTS.*
+FROM
+    ADHERENTS NATURAL JOIN DERNIER_EMPRUNT_ADHERENT
+WHERE 
+    ID_EMPRUNT IS NULL
+OR
+    ID_EMPRUNT IN (
+        SELECT 
+            ID_EMPRUNT
+        FROM
+            EMPRUNTS
+        WHERE
+            ID_STATION_FIN IS NOT NULL
+    )
+;
