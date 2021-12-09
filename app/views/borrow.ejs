@@ -5,16 +5,16 @@
         <form class="col s12" method="POST" action="/borrow/">
             <div class="row">
                 <div class="input-field col s6">
-                    <input id="bikeID" name="bikeID" type="number" value="<%= bikes[0].ID_VELO %>" readonly>
+                    <input id="bikeID" name="bikeID" type="number" <% if (bikes.length != 0) { %>value="<%= bikes[0].ID_VELO %>" <% } %> readonly>
                     <label for="bikeID">Vélo :</label>
                 </div>
                 <div class="input-field col s6">
-                    <input id="subscriberID" name="subscriberID" type="number" value="<%= subscribers[0].ID_ADHERENT %>" readonly>
+                    <input id="subscriberID" name="subscriberID" type="number" <% if (subscribers.length != 0) { %>value="<%= subscribers[0].ID_ADHERENT %>"<% } %> readonly>
                     <label for="subscriberID">Adhérent :</label>
                 </div>
             </div>
             <div class="row">
-                <button type="submit" class="waves-effect waves-light btn">Emprunter</button>
+                <button type="submit" class="waves-effect waves-light btn" <% if (bikes.length == 0 || subscribers.length == 0) { %>disabled<% } %>>Emprunter</button>
             </div>
         </form>
     </div>
